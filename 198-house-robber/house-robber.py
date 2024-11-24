@@ -7,9 +7,11 @@ class Solution:
             if (i, cont) in memo:
                 return tot+memo[i, cont]
             if cont:
-                memo[i, cont] = max(dp(i + 1, False, nums[i]), dp( i+ 1, True, 0))
-                return tot+memo[i, cont]
+                temp = max(dp(i + 1, False, nums[i]), dp( i+ 1, True, 0))
+                memo[i, cont] = temp
+                return tot+temp
             else:
-                memo[i,cont] = dp(i + 1, True, 0)
-                return tot+memo[i, cont]
+                temp = dp(i + 1, True, 0)
+                memo[i,cont] = temp
+                return tot+temp
         return dp(0, True, 0)
