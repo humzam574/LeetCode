@@ -1,6 +1,9 @@
 class Solution:
     def rob(self, nums: List[int]) -> int:
-        prevTwo = prevOne = 0
-        for n in nums:
-            temp, prevTwo, prevOne = prevTwo, prevOne, max(prevTwo + n, prevOne)
-        return prevOne
+        memo = defaultdict(int)
+        def dp(i, tot):
+            if i >= len(nums) or i in memo:
+                return tot+memo[i]
+            memo[i] = max(dp(i + 2, nums[i]), dp(i+ 1, 0))
+            return tot+memo[i]
+        return dp(0, 0)
