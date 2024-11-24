@@ -1,0 +1,2 @@
+class Solution:
+    def minMovesToCaptureTheQueen(self,a,b,c,d,e,f):return 1+((b==d and(a<c<e or e<c<a))or(a==c and(b<d<f or f<d<b)))if(a==e or b==f)else 1+(a+b==e+f and(c<a<e or e<a<c))if(c+d==e+f)else 1+(b-a==f-e and(c<a<e or e<a<c))if(d-c==f-e)else 2
