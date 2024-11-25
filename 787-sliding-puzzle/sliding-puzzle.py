@@ -1,37 +1,46 @@
 class Solution:
     def slidingPuzzle(self, board: List[List[int]]) -> int:
-        fin = [[1,2,3],[4,5,0]]
-        self.low = int(1e9)
-        vis = defaultdict(int)
-        def search(x,y,dep):
-            if dep <= self.low:
-                #print("dep = " + str(dep))
-                #print(board)
-                if board == fin:
-                    return dep
-                sig =(''.join(str(n) for n in board[0])) + (''.join(str(n) for n in board[1]))
-                #print(sig)
-                if sig in vis and vis[sig] < dep:
-                    return -1
-                vis[sig] = dep
-                found = False
-                direct = [(0,1),(1,0),(-1,0),(0,-1)]
-                for (dx,dy) in direct:
-                    if 0 <= x+dx < 2 and 0 <= y+dy < 3:
-                        board[x+dx][y+dy], board[x][y] = board[x][y], board[x+dx][y+dy]
-                        #if vis[(''.join(str(n) for n in board[0])) + (''.join(str(n) for n in board[1]))] >= dep:
-                        answer = search(x+dx, y+dy, dep+1)
-                        if answer != -1:
-                            #print(self.low)
-                            self.low = min(self.low, answer)
-                            found = True
-                        board[x+dx][y+dy], board[x][y] = board[x][y], board[x+dx][y+dy]
-                if not found:
-                    return -1
-                return self.low
+        m, n = 2, 3
+        seq = []
+        start, end = '', '123450'
+        for i in range(m):
+            for j in range(n):
+                if board[i][j] != 0:
+                    seq.append(board[i][j])
+                start += str(board[i][j])
+
+        def check(seq):
+            n = len(seq)
+            cnt = sum(seq[i] > seq[j] for i in range(n) for j in range(i, n))
+            return cnt % 2 == 0
+
+        def f(s):
+            ans = 0
+            for i in range(m * n):
+                if s[i] != '0':
+                    num = ord(s[i]) - ord('1')
+                    ans += abs(i // n - num // n) + abs(i % n - num % n)
+            return ans
+
+        if not check(seq):
             return -1
-        for i in range(2):
-            for j in range(3):
-                if board[i][j] == 0:
-                    return search(i,j,0)
-            
+        q = [(f(start), start)]
+        dist = {start: 0}
+        while q:
+            _, state = heappop(q)
+            if state == end:
+                return dist[state]
+            p1 = state.index('0')
+            i, j = p1 // n, p1 % n
+            s = list(state)
+            for a, b in [[0, -1], [0, 1], [1, 0], [-1, 0]]:
+                x, y = i + a, j + b
+                if 0 <= x < m and 0 <= y < n:
+                    p2 = x * n + y
+                    s[p1], s[p2] = s[p2], s[p1]
+                    next = ''.join(s)
+                    s[p1], s[p2] = s[p2], s[p1]
+                    if next not in dist or dist[next] > dist[state] + 1:
+                        dist[next] = dist[state] + 1
+                        heappush(q, (dist[next] + f(next), next))
+        return -1
