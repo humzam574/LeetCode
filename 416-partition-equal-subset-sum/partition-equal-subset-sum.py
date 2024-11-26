@@ -9,6 +9,8 @@ class Solution:
                 return True
             if i == len(nums) - 1:
                 return False
+            if curr < 0:
+                return False
             if (curr, i) in memo:
                 return memo[curr,i]
             temp = bt(curr, i+1) or bt(curr + nums[i+1], i+1)
