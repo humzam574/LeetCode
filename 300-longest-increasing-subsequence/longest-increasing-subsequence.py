@@ -1,13 +1,9 @@
 class Solution:
     def lengthOfLIS(self, nums: List[int]) -> int:
-        high = max(nums)
-        low = min(nums)
-        depth = defaultdict(int)
-        for num in nums:
-            depth[num]=1
-            top = 0
-            for i in range(num - 1, low-1, -1):
-                top = max(top, depth[i])
-            depth[num]+=top
-        #print(depth)
-        return max(depth.values())
+        dep = [1] * len(nums)
+
+        for i in range(len(nums) - 1, -1, -1):
+            for j in range(i + 1, len(nums)):
+                if nums[i] < nums[j]:
+                    dep[i] = max(dep[i], 1 + dep[j])
+        return max(dep)
