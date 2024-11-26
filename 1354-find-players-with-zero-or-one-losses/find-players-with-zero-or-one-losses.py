@@ -1,9 +1,25 @@
 class Solution:
     def findWinners(self, matches: List[List[int]]) -> List[List[int]]:
-        dict, ans = defaultdict(int), [[],[]]
-        for m in matches:
-            dict[m[0]] += 0
-            dict[m[1]] += 1
-        for k, v in dict.items():
-            if v < 2: ans[v].append(k)
-        return [sorted(ans[0]), sorted(ans[1])]
+        no_losses = set()
+        one_loss = set()
+        losers = set()
+
+        for (winner, loser) in matches:
+            if (winner not in losers and winner not in one_loss):
+                no_losses.add(winner)
+
+            if (loser in no_losses):
+                no_losses.remove(loser)
+                one_loss.add(loser)
+
+            elif (loser in one_loss):
+                one_loss.remove(loser)
+                losers.add(loser)
+            
+            elif (loser not in losers):
+                one_loss.add(loser)
+        
+        winners = sorted(list(no_losses))
+        one_loss = sorted(list(one_loss))
+
+        return [winners, one_loss]
