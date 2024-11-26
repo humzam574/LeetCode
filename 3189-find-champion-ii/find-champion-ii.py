@@ -5,8 +5,8 @@ class Solution:
         for edge in edges:
             # if edge[0] in losers:
             #     tot.remove(edge[1])
-            if edge[0] not in losers:
-                losers.add(edge[1])
+            # if edge[0] not in losers:
+            #     losers.add(edge[1])
             #if edge[1] in tot:
             tot.discard(edge[1])
         # print(losers)
