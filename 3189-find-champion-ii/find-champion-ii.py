@@ -9,8 +9,8 @@ class Solution:
                 losers.add(edge[1])
             #if edge[1] in tot:
             tot.discard(edge[1])
-        print(losers)
-        print(tot)
+        # print(losers)
+        # print(tot)
         # for l in losers:
         #     tot.remove(l)
         if len(tot) > 1 or len(tot) == 0:
