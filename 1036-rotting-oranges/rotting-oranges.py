@@ -1,33 +1,23 @@
 class Solution:
     def orangesRotting(self, grid: List[List[int]]) -> int:
-        ans = 0
-        self.m = len(grid)
-        self.n = len(grid[0])
+        ans, self.m, self.n, dq = 0, len(grid), len(grid[0]), collections.deque()
         def search(dq):
-            #dq = collections.deque()
-            #dq.append((x,y))
             depth = 0
             while dq:
                 for m in range(len(dq)):
-                    #print(dq)
                     x, y = dq.popleft()
-                    direct = [(0,1), (1,0), (-1,0), (0,-1)]
-                    for dx, dy in direct:
-                        #print(str(0 <= x + dx < self.m) + ", " + str(0 <= y + dy < self.n) + ", ")
+                    for dx, dy in [(0,1), (1,0), (-1,0), (0,-1)]:
                         if 0 <= x + dx < self.m and 0 <= y + dy < self.n and grid[x+dx][y+dy] == 1:
-                            #print("adding " + str(x+dx) + ", " + str(y + dy))
                             grid[x+dx][y+dy] = 3
                             dq.append((x+dx,y+dy))
                 depth+=1
-            return depth-1
-        dq = collections.deque()
+            return max(0, depth-1)
         for i in range(self.m):
             for j in range(self.n):
                 if grid[i][j] == 2:
                     grid[i][j] = 3
                     dq.append((i, j))
-                    #print(grid)
-        ans = max(0, search(dq))
+        ans = search(dq)
         for i in range(self.m):
             for j in range(self.n):
                 if grid[i][j] == 1:
