@@ -3,8 +3,8 @@ class Solution:
         strn = str(num)
         x = "9"
         d1, d2 = True, True
-        ans = 0
-        #ans = ""
+        #ans = 0
+        ans = ""
         l = len(strn)
         y = "9"
         add1 = add2 = 0
@@ -22,13 +22,13 @@ class Solution:
         print(add1)
         print(add2)
         for i in range(l):
-            #ans = ans + str(add1*(strn[i] == x) + add2*(strn[i] == y))
-            if strn[i] == x:
-                #ans+=str(add1)
-                ans+=(add1 * 10** (l - i - 1))
-            if strn[i] == y:
-                #ans+=str(add2)
-                ans+=(add2 * 10 **(l - i - 1))
-            # else:
-            #     ans+="0"
+            ans = ans + str(add1*(strn[i] == x) + add2*(strn[i] == y))
+            # if strn[i] == x:
+            #     #ans+=str(add1)
+            #     ans+=(add1 * 10** (l - i - 1))
+            # if strn[i] == y:
+            #     #ans+=str(add2)
+            #     ans+=(add2 * 10 **(l - i - 1))
+            # # else:
+            # #     ans+="0"
         return int(ans)
