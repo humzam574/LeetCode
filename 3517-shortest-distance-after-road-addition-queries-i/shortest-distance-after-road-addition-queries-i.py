@@ -5,11 +5,11 @@ class Solution:
             while dq:
                 cd, node = heapq.heappop(dq)
                 if node == n - 1: return dist[n - 1]
-                if cd > dist[node]: continue
-                for nbr, wt in graph[node]:
-                    if cd + wt < dist[nbr]:
-                        dist[nbr] = cd + wt
-                        heapq.heappush(dq, (cd + wt, nbr))
+                if cd <= dist[node]:
+                    for nbr, wt in graph[node]:
+                        if cd + wt < dist[nbr]:
+                            dist[nbr] = cd + wt
+                            heapq.heappush(dq, (cd + wt, nbr))
             return dist[n - 1]
         graph, ans = [[] for i in range(n)], []
         for i in range(n - 1): graph[i].append((i + 1, 1))
