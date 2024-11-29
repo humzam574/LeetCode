@@ -1,13 +1,15 @@
 class Solution:
     def minimumTime(self, grid: List[List[int]]) -> int:
         if grid[0][1] > 1 and grid[1][0] > 1: return -1
-        m, n, pq, visited = len(grid), len(grid[0]), [(grid[0][0], 0, 0)], set()
+        m, n, pq, visited = len(grid), len(grid[0]), [(grid[0][0], 0, 0)], [[False] * len(grid[0]) for _ in range(len(grid))]
+        visited[0][0] = True
         while pq:
-            curr, x, y = heapq.heappop(pq)
-            if (x == m - 1 and y == n - 1): return curr
-            if (x, y) in visited: continue
-            visited.add((x,y))
+            curr, x, y = heappop(pq)
+            visited[x][y] = True
             for dx, dy in [(0,1), (1,0), (0,-1), (-1,0)]:
-                if (0 <= x+dx < m and 0 <= y+dy < n) and (x+dx,y+dy) not in visited:
-                    ndist, wait = max(grid[x+dx][y+dy], curr + grid[x+dx][y+dy] + (curr + grid[x+dx][y+dy] % 2)), 1 - (grid[x+dx][y+dy] - curr) % 2
-                    heapq.heappush(pq, (max(curr + 1, grid[x+dx][y+dy] + wait), x+dx, y+dy))
+                nx, ny = x+dx, y+dy
+                if nx < 0 or nx >= m or ny < 0 or ny >= n or visited[nx][ny]: continue
+                nt=curr+1+(grid[nx][ny]>curr+1)*((grid[nx][ny]-curr)//2*2)
+                if nx == m - 1 and ny == n - 1: return nt
+                visited[nx][ny] = True
+                heappush(pq, (nt, nx, ny))
