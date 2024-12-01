@@ -3,7 +3,6 @@ class Solution:
         costs, ans, curr = [i for i in range(1,27)], 0, 0
         for c, v in zip(chars, vals): costs[ord(c) - 97] = v    
         for char in s:
-            curr += costs[ord(char) - 97]
-            if curr < 0: curr = 0
+            curr = max(curr + costs[ord(char) - 97], 0)
             if curr > ans: ans = curr
         return ans
