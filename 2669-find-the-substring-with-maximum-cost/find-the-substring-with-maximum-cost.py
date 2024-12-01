@@ -1,6 +1,6 @@
 class Solution:
     def maximumCostSubstring(self, s: str, chars: str, vals: List[int]) -> int:
-        costs, ans, curr = [i + 1 for i in range(26)], 0, 0
+        costs, ans, curr = [i for i in range(1,27)], 0, 0
         for c, v in zip(chars, vals): costs[ord(c) - 97] = v    
         for char in s:
             curr += costs[ord(char) - 97]
