@@ -10,15 +10,13 @@ class Solution:
         def dfs(rt, dep):
             if not rt: return
             if dep >= len(self.arr):
-                self.arr.append(-rt.val)
+                self.arr.append(rt.val)
             else:
-                self.arr[dep] -= rt.val
+                self.arr[dep] += rt.val
             dfs(rt.right, dep+1)
             dfs(rt.left, dep+1)
         dfs(root,0)
         if len(self.arr) < k:
             return -1
-        heapify(self.arr)
-        for i in range(k-1):
-            heappop(self.arr)
-        return -heappop(self.arr)
+        self.arr.sort(reverse = True)
+        return self.arr[k-1]
