@@ -7,6 +7,7 @@
 class Solution:
     def kthLargestLevelSum(self, root: Optional[TreeNode], k: int) -> int:
         h, q = [], [root]
+        heapify(h)
         while q:
             temp, sm = [], 0
             for i in q:
