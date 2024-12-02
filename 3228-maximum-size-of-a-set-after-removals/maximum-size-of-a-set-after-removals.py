@@ -6,8 +6,6 @@ class Solution:
         rem, c = x - ans, 0
         for i in s2:
             if i not in s1: c += 1
-            elif rem > 0:
-                c += 1
-                rem -= 1
+            elif rem > 0: c, rem = c + 1, rem - 1
             if c >= n // 2: break
         return ans + c
