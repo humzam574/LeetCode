@@ -1,7 +1,12 @@
 class Solution:
     def numSubarraysWithSum(self, nums: List[int], goal: int) -> int:
-        dict, curr, ans = defaultdict(int), 0, 1
-        for i in range(len(nums)):
-            curr+=nums[i]
-            ans, dict[curr] = ans + (curr == goal) + dict[curr - goal], dict[curr] + 1
-        return ans-1
+        def atMost(n):
+            start, curr, ans = 0, 0, 0
+            for end in range(len(nums)):
+                curr += nums[end]
+                while start <= end and curr > n:
+                    curr -= nums[start]
+                    start += 1
+                ans += end - start + 1
+            return ans
+        return atMost(goal) - atMost(goal - 1)
