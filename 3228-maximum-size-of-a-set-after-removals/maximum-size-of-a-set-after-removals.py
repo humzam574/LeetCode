@@ -3,9 +3,9 @@ class Solution:
         s1, s2 = set(nums1), set(nums2)
         n, x = len(nums1), len(s1)
         ans = min(n // 2, x)
-        rem, c = x - ans, 0
+        rem, c, t = x - ans, ans, n // 2 + ans
         for i in s2:
             if i not in s1: c += 1
             elif rem > 0: c, rem = c + 1, rem - 1
-            if c >= n // 2: break
-        return ans + c
+            if c >= t: break
+        return c
