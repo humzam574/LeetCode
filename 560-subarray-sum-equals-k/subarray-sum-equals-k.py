@@ -1,7 +1,11 @@
 class Solution:
-    def subarraySum(self, nums: List[int], goal: int) -> int:
-        dict, curr, ans = defaultdict(int), 0, 1
-        for i in range(len(nums)):
-            curr+=nums[i]
-            ans, dict[curr] = ans + (curr == goal) + dict[curr - goal], dict[curr] + 1
-        return ans-1
+    def subarraySum(self, nums: List[int], k: int) -> int:
+        ans = 0
+        dict = defaultdict(int)
+        dict[0] = 1
+        curr = 0
+        for num in nums:
+            curr += num
+            ans += dict[curr - k]
+            dict[curr] += 1
+        return ans
