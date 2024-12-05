@@ -1,21 +1,10 @@
 class Solution:
     def canChange(self, start: str, target: str) -> bool:
-        Ltarg, Rtarg, l, Lstart, Rstart = [], [], 0, [], []
-        if start.count("R") != target.count("R") or start.count("L") != target.count("L"): return False
-        for i, char in enumerate(target):
-            if char == "L": Ltarg.append(i)
-            elif char == "R": Rtarg.append(i)
-        for r, char in enumerate(start):
-            if char == "L": Lstart.append((l, r))
-            if char == "R": l = r + 1
-        #if len(Lstart) != len(Ltarg): return False
-        for i,pair in enumerate(Lstart):
-            if not (pair[0] <= Ltarg[i] <= pair[1]): return False
-        for l in range(len(start) - 1, -1 , -1):
-            if start[l] == "R": Rstart.append((l, r))
-            elif target[l] == "L": r = l - 1
-        Rstart = Rstart[::-1]
-        #if len(Rstart) != len(Rtarg): return False
-        for i, pair in enumerate(Rstart):
-            if not (pair[0] <= Rtarg[i] <= pair[1]): return False
+        if (len(start) != len(target) or start.count('_') != target.count('_')): return False
+        n, i, j = len(start), 0, 0
+        while i < n or j < n:
+            while i < n and start[i]  == '_': i += 1
+            while j < n and target[j] == '_': j += 1
+            if (i == n and j == n) or (i == n or j == n or start[i] != target[j]) or (start[i] == 'L' and i < j) or (start[i] == 'R' and i > j): return i == n and j == n
+            i, j = i + 1, j + 1
         return True
