@@ -18,8 +18,6 @@ class Solution:
         for i, char in enumerate(target): #keeps track of i indices of all L's and R's in answer
             if char == "L": Ltarg.append(i)
             elif char == "R": Rtarg.append(i)
-        
-
         l = 0
         Lstart = []
         for r, char in enumerate(start):
@@ -29,11 +27,11 @@ class Solution:
                 l = r + 1
         
         if len(Lstart) != len(Ltarg):
-            print("fail1")
+            #print("fail1")
             return False
         for i,pair in enumerate(Lstart):
             if not (pair[0] <= Ltarg[i] <= pair[1]):
-                print("fail=2")
+                #print("fail=2")
                 return False
         Rstart = []
         r = len(start) - 1
@@ -43,17 +41,16 @@ class Solution:
             elif target[l] == "L":
                 r = l - 1
         Rstart = Rstart[::-1]
-        #print(Rstart)
         if len(Rstart) != len(Rtarg):
-            print("fail3")
+            #print("fail3")
             return False
         for i, pair in enumerate(Rstart):
             if not (pair[0] <= Rtarg[i] <= pair[1]):
-                print("fail4")
-                print(Rstart)
-                print(pair)
-                print(Rtarg)
-                print(i)
+                # print("fail4")
+                # print(Rstart)
+                # print(pair)
+                # print(Rtarg)
+                # print(i)
                 return False
         return True
 
