@@ -7,8 +7,7 @@ class Solution:
         while r <= length:
             if s[l:r] in curr:
                 ans.add(s[l:r])
-            else:
-                curr.add(s[l:r])
+            curr.add(s[l:r])
             l+=1
             r+=1
         return list(ans)
