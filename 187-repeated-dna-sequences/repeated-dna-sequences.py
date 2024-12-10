@@ -1,13 +1,8 @@
 class Solution:
     def findRepeatedDnaSequences(self, s: str) -> List[str]:
-        ans = set()
-        curr = set()
-        l, r = 0, 10
-        length = len(s)
+        ans, curr, l, r, length = set(), set(), 0, 10, len(s)
         while r <= length:
-            if s[l:r] in curr:
-                ans.add(s[l:r])
+            if s[l:r] in curr: ans.add(s[l:r])
             curr.add(s[l:r])
-            l+=1
-            r+=1
+            l, r = l + 1, r + 1
         return list(ans)
