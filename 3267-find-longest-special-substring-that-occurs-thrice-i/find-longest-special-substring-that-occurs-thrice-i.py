@@ -11,9 +11,28 @@ class Solution:
             else: r, high = r + 1, max(high, r - l + 1)
         for i in range(high, 0, -1):
             dict, l, r = defaultdict(int), 0, i
-            while r <= len(s):
-                if (len(set(s[l:r])) == 1):
-                    if dict[s[l]] == 2: return i
-                    dict[s[l]]+=1   
+            curr = Counter(s[:i])
+            if len(curr) == 1: dict[s[l]]+=1
+            #print(curr)
+            #print(dict)
+            while r < len(s):
+                
+                curr[s[l]] -= 1
+                if curr[s[l]] == 0:
+                    del curr[s[l]]
+                if s[r] in curr:
+                    curr[s[r]]+=1
+                else:
+                    curr[s[r]] = 1
+                #curr[s[r]] += 1
+                
+                
+                #print(curr)
+                #print(dict)
                 l, r = l + 1, r + 1
+                if (len(curr) == 1):
+                    dict[s[l]]+=1
+                    if dict[s[l]] == 3: return i
+                #if r < len(s):
+                
         return -1
