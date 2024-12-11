@@ -1,8 +1,10 @@
 class Solution:
     def maximumBeauty(self, nums: List[int], k: int) -> int:
         nums.sort()
-        l, r, ans = 0, 0, 1
-        while r < len(nums):
-            if nums[r] <= 2*k+nums[l]: r, ans = r + 1, max(ans, r - l + 1)
-            else: l+=1
-        return ans
+        left, right = 0, 1
+        for right in range(len(nums)):
+            mid = (nums[left] + nums[right]) // 2
+            if mid - nums[left] <= k and nums[right] - mid <= k:
+                continue
+            left += 1
+        return right - left + 1
