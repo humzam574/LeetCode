@@ -1,5 +1,5 @@
 class Solution:
     def sortJumbled(self, mapping: List[int], nums: List[int]) -> List[int]:
-        ans = []
-        for num in nums: ans.append((num, int("".join(str(mapping[int(char)]) for char in str(num)))))
-        return [a[0] for a in sorted(ans, key = lambda x : x[1])]
+        mapping = {str(i): str(j) for i, j in enumerate(mapping)}
+        def sort_map(a: int) -> int: return int("".join(map(mapping.get, str(a))))
+        return sorted(nums, key=sort_map)
