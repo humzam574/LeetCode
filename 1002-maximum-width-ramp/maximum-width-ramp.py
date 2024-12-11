@@ -8,5 +8,5 @@ class Solution:
             while stacc and nums[i] >= stacc[-1][0]:
                 ans = max(ans, i - stacc[-1][-1])
                 stacc.pop()
-            if not stacc: break
+            #if not stacc: break
         return ans
