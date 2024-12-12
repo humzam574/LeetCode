@@ -1,36 +1,25 @@
 class Solution:
     def generatePalindromes(self, s: str) -> List[str]:
-        #get half and get all permutations of it
-        cnt = Counter(s)
-        mid = None
-        if len(s) % 2 == 1:
-            for k, v in cnt.items():
-                if v % 2 == 1:
-                    mid = k
-                    cnt[k] -= 1
-                    break
-        pm = []
-        for k, v in cnt.items():
-            if cnt[k] % 2: return []
-            cnt[k] = cnt[k] // 2
-            for i in range(cnt[k]):
-                pm.append(k)
-        print(pm)
-        print(cnt)
-        print(mid)
-        ans = set()
-        def perm(curr, left):
-            if not left:
-                ans.add(tuple(curr))
-            for i, item in enumerate(left):
-                perm(curr + [item], left[:i] + left[i+1:])
-        perm([], pm)
-        print(ans)
-        ans = list(ans)
-        for i,piece in enumerate(ans):
-            temp = ''.join(piece)
-            if mid:
-                ans[i] = temp + mid + temp[::-1]
-            else:
-                ans[i] = temp + temp[::-1]
-        return list(ans)
+        count = Counter(s)
+        odds = 0
+        for v in count.values():
+            if v % 2:
+                odds += 1
+        if odds > 1:
+            return []
+            
+        mid = ''
+        half = []
+        for c, v in count.items():
+            for i in range(v//2):
+                half.append(c)
+            if v % 2:
+                mid = c
+                
+        result = set()
+        for p in permutations(half):
+            half_str = ''.join(p)
+            palindrome = half_str + mid + half_str[::-1]
+            result.add(palindrome)
+            
+        return list(result)
