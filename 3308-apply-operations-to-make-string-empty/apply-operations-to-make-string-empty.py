@@ -1,13 +1,6 @@
 class Solution:
     def lastNonEmptyString(self, s: str) -> str:
-        cnt = Counter(s)
-        idx = defaultdict(list)
-        for i,c in enumerate(s):
-            idx[c].append(i)
-        high = sorted(list(cnt.values()))[-1]
-        ans = []
-        for key, value in idx.items():
-            if len(value) == high:
-                ans.append((value[-1], key))
-        ans.sort(key = lambda x: x[0])
-        return ''.join(a[1] for a in ans)
+        idx, high, ans = defaultdict(list), sorted(list(Counter(s).values()))[-1], []
+        for i,c in enumerate(s): idx[c].append(i)
+        for key, value in idx.items(): ans.append((value[-1], key)) if len(value) == high else None
+        return ''.join(a[1] for a in sorted(ans, key = lambda x: x[0]))
