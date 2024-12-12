@@ -1,3 +1,2 @@
 class Solution:
-    def asteroidsDestroyed(self, mass: int, asteroids: List[int]) -> bool:
-        return all(mass := mass + a if mass >= a else False for a in sorted(asteroids))
+    def asteroidsDestroyed(self, m, s): return all(m:=m+a if m>=a else False for a in sorted(s))
