@@ -1,12 +1,19 @@
 class Solution:
     def repeatLimitedString(self, s: str, repeatLimit: int) -> str:
-        heap, ans = [(-ord(ch), -c) for ch, c in Counter(s).items()], ''
-        heapq.heapify(heap)
+        heap = [(-ord(k), v) for k, v in Counter(s).items()]
+        heapify(heap)
+        ans = []
         while heap:
-            mch, mc = heapq.heappop(heap)
-            while heap and -mc > repeatLimit:
-                tch, tc = heapq.heappop(heap)
-                ans, mc = ans + chr(-mch) * repeatLimit + chr(-tch), mc + repeatLimit
-                if tc < -1: heapq.heappush(heap, (tch, tc+1))
-            ans += chr(-mch) * min(-mc, repeatLimit)
-        return ans
+            k, v = heappop(heap)
+            if v <= repeatLimit:
+                ans.append(chr(-k) * v)
+            else:
+                ans.append(chr(-k) * repeatLimit)
+                if not heap:
+                    break
+                ok, ov = heappop(heap)
+                ans.append(chr(-ok))
+                if ov > 1:
+                    heappush(heap, (ok, ov - 1))
+                heappush(heap, (k, v - repeatLimit))
+        return ''.join(ans)
