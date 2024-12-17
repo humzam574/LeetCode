@@ -1,27 +1,22 @@
 class Solution:
     def maximumLengthOfRanges(self, nums: List[int]) -> List[int]:
         l = len(nums)
-        a1 = [0] * l
-        stack = []
-        for i, n in enumerate(nums):
-            while stack and n > stack[-1][0]:
-                sn, si = stack.pop()
+        a1, a2 = [0] * l, [0] * l
+        s1, s2 = [], []
+        for i in range(l):
+            n = nums[i]
+            while s1 and n > s1[-1][0]:
+                sn, si = s1.pop()
                 a1[si] = i - si
-            stack.append((n, i))
-        for i,n in stack:
-            a1[n] = l - n
-        stack = []
-        a2 = [0] * l
+            s1.append((n, i))
+            n = nums[l - i - 1]
+            while s2 and n > s2[-1][0]:
+                sn, si = s2.pop()
+                a2[si] = i - si - 1
+            s2.append((n,i))
+        for i,n in s1:
+            a1[n] += l - n
         l -= 1
-        for i in range(l, -1, -1):
-            n, i = nums[i], l - i
-            while stack and n > stack[-1][0]:
-                sn, si = stack.pop()
-                a2[si] = max(0, i - si - 1)
-            stack.append((n,i))
-        for i,n in stack:
+        for i,n in s2:
             a2[n] += (l - n)
-        ans = []
-        for i in range(l + 1):
-            ans.append(a1[i]+a2[l-i])
-        return ans
+        return [a1[i]+a2[l-i] for i in range(l+1)]
