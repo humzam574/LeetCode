@@ -1,8 +1,13 @@
 class Solution:
     def finalPrices(self, prices: List[int]) -> List[int]:
-        for i in range(len(prices)):
-            for j in range(i+1, len(prices)):
-                if prices[i] >= prices[j]:
-                    prices[i] -= prices[j]
-                    break
-        return prices
+        stack = []
+        nextsmaller = prices[:]
+
+        for i,p in enumerate(prices):
+            while stack and prices[stack[-1]] >= p:
+                idx = stack.pop()
+                nextsmaller[idx] = prices[idx] - p
+            stack.append(i)
+        
+
+        return nextsmaller
