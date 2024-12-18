@@ -1,3 +1,4 @@
 class Solution:
     def findValueOfPartition(self, nums: List[int]) -> int:
-        return min(b - a for a, b in zip(sorted(nums), sorted(nums)[1:]))
+        nums.sort()
+        return min(nums[i+1] - nums[i] for i in range(len(nums) - 1))
