@@ -1,22 +1,21 @@
 class Solution:
     def getSubarrayBeauty(self, nums: List[int], k: int, x: int) -> List[int]:
-        def src():
-            srt = sorted(dict.keys())
-            curr = x
-            idx = -1
-            while curr > 0:
-                idx += 1
-                curr -= dict[srt[idx]]
-            return min(0, srt[idx])
-        dict = Counter(nums[:k])
-        ans = [src()]
-        for i in range(k, len(nums)):
-            if nums[i] in dict:
-                dict[nums[i]] += 1
-            else:
-                dict[nums[i]] = 1
-            dict[nums[i - k]] -= 1
-            if not dict[nums[i - k]]:
-                del dict[nums[i - k]]
-            ans.append(src())
+        n = len(nums)
+        ans = [0] * (n-k+1)
+        count = [0] * 50
+        cur = 0
+        for i in range(n):
+            if nums[i]<0: 
+                count[nums[i]+50] += 1
+                cur += 1
+            if i>=k and nums[i-k]<0:
+                count[nums[i-k]+50] -= 1
+                cur -= 1
+            if i>=k-1 and cur >= x:
+                tmp = 0
+                for j in range(50):
+                    tmp += count[j]
+                    if tmp>=x:
+                        ans[i-k+1] = j-50
+                        break
         return ans
