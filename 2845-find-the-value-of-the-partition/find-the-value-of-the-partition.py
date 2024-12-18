@@ -1,7 +1,7 @@
 class Solution:
     def findValueOfPartition(self, nums: List[int]) -> int:
         nums.sort()
-        ans = inf
-        for i in range(0, len(nums) - 1):
-            ans = min(ans, abs(nums[i] - nums[i+1]))
+        ans = nums[1] - nums[0]
+        for i in range(1, len(nums) - 1):
+            if nums[i+1] - nums[i] < ans: ans = nums[i+1] - nums[i]
         return ans
