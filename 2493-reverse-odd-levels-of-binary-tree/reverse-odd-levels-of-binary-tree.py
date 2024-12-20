@@ -6,10 +6,10 @@
 #         self.right = right
 class Solution:
     def reverseOddLevels(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
-        def traverse(leftNode, rightNode, odd):
-            if leftNode is None or rightNode is None: return
-            if (odd): leftNode.val, rightNode.val = rightNode.val, leftNode.val
-            traverse(leftNode.left, rightNode.right,  not odd)
-            traverse(leftNode.right, rightNode.left, not odd)
+        def traverse(l, r, odd):
+            if l is None or r is None: return
+            if odd: l.val, r.val = r.val, l.val
+            traverse(l.left, r.right,  not odd)
+            traverse(l.right, r.left, not odd)
         traverse(root.left, root.right, True)
         return root
