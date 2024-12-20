@@ -9,8 +9,7 @@ class Solution:
         def traverse(leftNode, rightNode, level):
             if leftNode is None or rightNode is None:
                 return
-            if (level % 2 != 0):
-                leftNode.val, rightNode.val = rightNode.val, leftNode.val
+            if (level % 2): leftNode.val, rightNode.val = rightNode.val, leftNode.val
             traverse(leftNode.left, rightNode.right,  level+1)
             traverse(leftNode.right, rightNode.left, level+1)
         
