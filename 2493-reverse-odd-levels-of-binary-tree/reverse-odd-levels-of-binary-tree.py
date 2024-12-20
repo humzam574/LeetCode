@@ -9,7 +9,6 @@ class Solution:
         def traverse(l, r, odd):
             if l is None or r is None: return
             if odd: l.val, r.val = r.val, l.val
-            traverse(l.left, r.right,  not odd)
-            traverse(l.right, r.left, not odd)
+            traverse(l.left, r.right,  not odd); traverse(l.right, r.left, not odd)
         traverse(root.left, root.right, True)
         return root
