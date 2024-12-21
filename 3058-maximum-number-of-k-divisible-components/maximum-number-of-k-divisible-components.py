@@ -1,8 +1,18 @@
 class Solution:
     def maxKDivisibleComponents(self, n: int, edges: List[List[int]], values: List[int], k: int) -> int:
-        tree, self.ans = defaultdict(list), 0
-        for edge in edges: tree[edge[0]].append(edge[1]); tree[edge[1]].append(edge[0])
-        def dfs(node, parent):
-            subsum = values[node] + sum((0 if n == parent else dfs(n, node)) for n in tree[node])
-            self.ans += (subsum % k == 0); return subsum
-        return (dfs(0, None), self.ans)[1]
+        def dfs(i: int, fa: int) -> int:
+            s = values[i]
+            for j in g[i]:
+                if j != fa:
+                    s += dfs(j, i)
+            nonlocal ans
+            ans += s % k == 0
+            return s
+
+        g = [[] for _ in range(n)]
+        for a, b in edges:
+            g[a].append(b)
+            g[b].append(a)
+        ans = 0
+        dfs(0, -1)
+        return ans
