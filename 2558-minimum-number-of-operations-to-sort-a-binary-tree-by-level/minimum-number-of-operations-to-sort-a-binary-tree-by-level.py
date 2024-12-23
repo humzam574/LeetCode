@@ -1,37 +1,44 @@
-# Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
 class Solution:
-    def minimumOperations(self, root: Optional[TreeNode]) -> int:
-        dq = deque()
-        dq.append(root)
-        ans = 0
-        while dq:
-            lev = []
-            for i in range(len(dq)):
-                if dq[0].left: dq.append(dq[0].left)
-                if dq[0].right: dq.append(dq[0].right)
-                lev.append(dq.popleft().val)
-            srt = sorted((num, idx) for idx, num in enumerate(lev))  # Pair values with their original indices
-            visited = [False] * len(lev)  # Keep track of visited elements
+    def minimumOperations(self, root: Optional["TreeNode"]) -> int:
+        queue = deque([root])
+        total_swaps = 0
 
-            for i in range(len(lev)):
-                if visited[i] or srt[i][1] == i:  # Skip already visited or correctly placed elements
-                    continue
-                
-                # Detect cycle
-                cycle_length = 0
-                j = i
-                while not visited[j]:
-                    visited[j] = True
-                    j = srt[j][1]  # Move to the index of the current element in the sorted array
-                    cycle_length += 1
-                
-                # Add swaps needed for this cycle
-                if cycle_length > 1:
-                    ans += cycle_length - 1
-        return ans
-                    
+        # Process tree level by level using BFS
+        while queue:
+            level_size = len(queue)
+            level_values = []
+
+            # Store level values and add children to queue
+            for _ in range(level_size):
+                node = queue.popleft()
+                level_values.append(node.val)
+
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+
+            # Add minimum swaps needed for current level
+            total_swaps += self._get_min_swaps(level_values)
+
+        return total_swaps
+
+    # Calculate minimum swaps needed to sort an array
+    def _get_min_swaps(self, original: list) -> int:
+        swaps = 0
+        target = sorted(original)
+
+        # Map to track current positions of values
+        pos = {val: idx for idx, val in enumerate(original)}
+
+        # For each position, swap until correct value is placed
+        for i in range(len(original)):
+            if original[i] != target[i]:
+                swaps += 1
+
+                # Update position of swapped values
+                cur_pos = pos[target[i]]
+                pos[original[i]] = cur_pos
+                original[cur_pos] = original[i]
+
+        return swaps
