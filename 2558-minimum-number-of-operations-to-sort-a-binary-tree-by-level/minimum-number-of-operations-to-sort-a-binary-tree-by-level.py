@@ -6,17 +6,17 @@
 #         self.right = right
 class Solution:
     def minimumOperations(self, root: Optional[TreeNode]) -> int:
-        def minswap(lev):
-            dict = {num : idx for idx, num in enumerate(lev)}
-            srt = sorted(lev)
-            swap = 0
-            for i, num in enumerate(srt):
-                if i != dict[num]:
-                    swp = dict[num]
-                    dict[num], dict[lev[i]] = dict[lev[i]], dict[num]
-                    lev[i], lev[swp] = lev[swp], lev[i]
-                    swap += 1
-            return swap
+        # def minswap(lev):
+        #     dict = {num : idx for idx, num in enumerate(lev)}
+        #     srt = sorted(lev)
+        #     swap = 0
+        #     for i, num in enumerate(srt):
+        #         if i != dict[num]:
+        #             swp = dict[num]
+        #             dict[num], dict[lev[i]] = dict[lev[i]], dict[num]
+        #             lev[i], lev[swp] = lev[swp], lev[i]
+        #             swap += 1
+        #     return swap
         # self.levs = []
         # def los(lev, curr):
         #     if curr:
@@ -37,6 +37,14 @@ class Solution:
                 if dq[0].left: dq.append(dq[0].left)
                 if dq[0].right: dq.append(dq[0].right)
                 lev.append(dq.popleft().val)
-            ans += minswap(lev)
+            dict = {num : idx for idx, num in enumerate(lev)}
+            srt = sorted(lev)
+            swap = 0
+            for i, num in enumerate(srt):
+                if i != dict[num]:
+                    swp = dict[num]
+                    dict[num], dict[lev[i]] = dict[lev[i]], dict[num]
+                    lev[i], lev[swp] = lev[swp], lev[i]
+                    ans += 1
         return ans
                     
