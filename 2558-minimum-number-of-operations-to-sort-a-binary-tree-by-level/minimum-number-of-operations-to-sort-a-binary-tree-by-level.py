@@ -15,7 +15,6 @@ class Solution:
                 if dq[0].left: dq.append(dq[0].left)
                 if dq[0].right: dq.append(dq[0].right)
                 lev.append(dq.popleft().val)
-            dict = {num : idx for idx, num in enumerate(lev)}
             srt = sorted((num, idx) for idx, num in enumerate(lev))  # Pair values with their original indices
             visited = [False] * len(lev)  # Keep track of visited elements
 
