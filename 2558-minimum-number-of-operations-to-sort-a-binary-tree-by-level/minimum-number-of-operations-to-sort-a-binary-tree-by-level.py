@@ -6,28 +6,6 @@
 #         self.right = right
 class Solution:
     def minimumOperations(self, root: Optional[TreeNode]) -> int:
-        # def minswap(lev):
-        #     dict = {num : idx for idx, num in enumerate(lev)}
-        #     srt = sorted(lev)
-        #     swap = 0
-        #     for i, num in enumerate(srt):
-        #         if i != dict[num]:
-        #             swp = dict[num]
-        #             dict[num], dict[lev[i]] = dict[lev[i]], dict[num]
-        #             lev[i], lev[swp] = lev[swp], lev[i]
-        #             swap += 1
-        #     return swap
-        # self.levs = []
-        # def los(lev, curr):
-        #     if curr:
-        #         if lev >= len(self.levs):
-        #             self.levs.append([])
-        #         self.levs[lev].append(curr.val)
-        #         los(lev+1, curr.left)
-        #         los(lev+1, curr.right)
-        # los(0, root)
-        # ans = 0
-        # for lev in self.levs:
         dq = deque()
         dq.append(root)
         ans = 0
@@ -38,13 +16,23 @@ class Solution:
                 if dq[0].right: dq.append(dq[0].right)
                 lev.append(dq.popleft().val)
             dict = {num : idx for idx, num in enumerate(lev)}
-            srt = sorted(lev)
-            swap = 0
-            for i, num in enumerate(srt):
-                if i != dict[num]:
-                    swp = dict[num]
-                    dict[num], dict[lev[i]] = dict[lev[i]], dict[num]
-                    lev[i], lev[swp] = lev[swp], lev[i]
-                    ans += 1
+            srt = sorted((num, idx) for idx, num in enumerate(lev))  # Pair values with their original indices
+            visited = [False] * len(lev)  # Keep track of visited elements
+
+            for i in range(len(lev)):
+                if visited[i] or srt[i][1] == i:  # Skip already visited or correctly placed elements
+                    continue
+                
+                # Detect cycle
+                cycle_length = 0
+                j = i
+                while not visited[j]:
+                    visited[j] = True
+                    j = srt[j][1]  # Move to the index of the current element in the sorted array
+                    cycle_length += 1
+                
+                # Add swaps needed for this cycle
+                if cycle_length > 1:
+                    ans += cycle_length - 1
         return ans
                     
