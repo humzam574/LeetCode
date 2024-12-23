@@ -4,4 +4,4 @@ class Solution:
         for r in range(0, len(nums)):
             curr += nums[r]
             while curr >= target: ans, curr, l = min(ans, r - l + 1), curr - nums[l], l + 1
-        return 0 if l == 0 else ans
+        return (l != 0) * ans
