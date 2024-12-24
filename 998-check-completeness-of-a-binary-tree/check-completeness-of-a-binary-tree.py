@@ -6,12 +6,16 @@
 #         self.right = right
 class Solution:
     def isCompleteTree(self, root: Optional[TreeNode]) -> bool:
-        dq, end = deque([root]), False
-        while dq:
-            for i in range(len(dq)):
-                node = dq.popleft()
-                if not node: end = True
-                else:
-                    if end: return False
-                    dq.append(node.left); dq.append(node.right)
+        self.arr, end = [], False
+        def los(dep, curr):
+            if dep >= len(self.arr): self.arr.append([])
+            if curr: self.arr[dep].append(curr.val); los(dep + 1, curr.left); los(dep + 1, curr.right)
+            else: self.arr[dep].append(None)
+        los(0, root); self.arr.pop()
+        for i in range(len(self.arr) - 1):
+            for n in self.arr[i]:
+                if n == None: return False
+        for n in self.arr[-1]:
+            if n == None: end = True
+            elif end: return False
         return True
