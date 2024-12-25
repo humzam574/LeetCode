@@ -6,12 +6,26 @@
 #         self.right = right
 class Solution:
     def largestValues(self, root: Optional[TreeNode]) -> List[int]:
-        def los(dep, curr):
-            if not curr: return
-            if dep >= len(self.ans): self.ans.append(curr.val)
-            else: self.ans[dep] = max(self.ans[dep], curr.val)
-            los(dep + 1, curr.left); los(dep + 1, curr.right)
-
-        self.ans = []
-        los(0, root)
-        return self.ans
+        max_val = []
+        cur_queue = deque()
+        cur_queue.append(root)
+        
+        if not root:
+            return max_val
+        
+        while cur_queue:
+            n = len(cur_queue)
+            cur_lvl_max = float('-inf')
+            
+            for _ in range(n):
+                node = cur_queue.popleft()
+                cur_lvl_max = max(cur_lvl_max, node.val)
+                
+                if node.left:
+                    cur_queue.append(node.left)
+                
+                if node.right:
+                    cur_queue.append(node.right)
+                
+            max_val.append(cur_lvl_max)        
+        return(max_val)
