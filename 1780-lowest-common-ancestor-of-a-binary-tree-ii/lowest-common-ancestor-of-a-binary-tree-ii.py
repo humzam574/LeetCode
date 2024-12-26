@@ -11,15 +11,7 @@ class Solution:
         def dfs(node):
             if not node: return node
             left, right = dfs(node.left), dfs(node.right)
-            conditions = 0
-            #conditions += ((node in (p,q)) + bool(left) + bool(right))
-            if node in (p, q): conditions += 1
-            if left: conditions += 1
-            if right: conditions += 1
-            if conditions == 2:
-                self.nodes_found = True
-            if (left and right) or node in (p, q):
-                return node
-            return left or right
+            self.nodes_found = self.nodes_found or (2 == (int(node in (p,q)) + int(bool(left)) + bool(right)))
+            return node if (left and right) or node in (p, q) else left or right
         ans = dfs(root)
         return ans if self.nodes_found else None
