@@ -7,22 +7,23 @@
 
 class Solution:
     def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
-        self.paths = [None, None]
-        def dfs(curr, path):
-            if not curr: return
-            if curr.val == p.val:
-                self.paths[0] = path
-            elif curr.val == q.val:
-                self.paths[1] = path
-            dfs(curr.left, path + "l")
-            dfs(curr.right, path + "r")
-        dfs(root, "")
-        if not self.paths[0] or not self.paths[1]: return None
-        for i in range(min(len(self.paths[0]), len(self.paths[1]))):
-            if self.paths[0][i] != self.paths[1][i]:
-                return root
-            if self.paths[0][i] == "l":
-                root = root.left
-            else:
-                root = root.right
-        return root
+        self.p_found = False
+        self.q_found = False
+        res = self.dfs(root, p, q)
+        return res if self.p_found and self.q_found else None
+    
+    def dfs(self, root, p, q):
+        if not root:
+            return None
+        left = self.dfs(root.left, p, q)
+        right = self.dfs(root.right, p, q)
+        if root.val == p.val:
+            self.p_found = True
+            return root
+        if root.val == q.val:
+            self.q_found = True
+            return root
+        
+        if left and right:
+            return root
+        return left or right
