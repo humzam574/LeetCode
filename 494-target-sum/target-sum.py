@@ -1,10 +1,15 @@
 class Solution:
     def findTargetSumWays(self, nums: List[int], target: int) -> int:
-        memo = {}
-        def bt(curr, i):
-            if (curr, i) in memo: return memo[curr,i]
-            if i == len(nums): return int(curr == target)
-            temp = bt(curr + nums[i], i + 1) + bt(curr - nums[i], i + 1)
-            memo[curr, i] = temp
-            return temp
-        return bt(0, 0)
+        sm = sum(nums)
+        if (sm + target) % 2 != 0 or sm < abs(target):
+            return 0
+        
+        st = (sm + target) // 2
+
+        dp = [1] + [0] * st
+
+        for n in nums:
+            for i in range(st, n - 1, -1):
+                dp[i] = dp[i - n] + dp[i]
+        
+        return dp[st]
