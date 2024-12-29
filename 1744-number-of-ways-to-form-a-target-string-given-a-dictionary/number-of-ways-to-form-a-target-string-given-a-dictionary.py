@@ -1,8 +1,6 @@
 class Solution:
     def numWays(self, words: List[str], target: str) -> int:
-        #this has to be some sort of tabulation
-        tl = len(target)
-        freq = [defaultdict(int) for i in range(len(words[0]))]
+        tl, wl, freq = len(target), len(words[0]), [defaultdict(int) for i in range(len(words[0]))]
         for i in range(len(words[0])):
             for j in range(len(words)):
                 freq[i][words[j][i]]+=1
