@@ -6,7 +6,6 @@ class Solution:
         for i in range(len(words[0])):
             for j in range(len(words)):
                 freq[i][words[j][i]]+=1
-        print(freq)
         @cache
         def bt(curr, k):
             if curr == target: return 1
