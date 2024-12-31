@@ -9,8 +9,4 @@ class Solution:
             p30 = costs[2] + (0 if l30 == 0 else dp[l30 - 1])
             p7 = costs[1] + (0 if l7 == 0 else dp[l7 - 1])
             dp[i] = min(p1, p30, p7)
-            print(dp)
-            print(l7)
-            print(l30)
-        print(dp)
         return dp[-1]
