@@ -1,10 +1,12 @@
 class Solution:
     def maxA(self, n: int) -> int:
-        #some sort of bottom up dp
-        @lru_cache(None)
-        def bt(curr, cb, cnt):
-            if curr >= n - 3:
-                return cnt + (n - curr) * cb
-            return max(bt(curr + 3, cnt, cnt*2), bt(curr + 1, cb, cnt + cb))
-        
-        return bt(0, 1, 0)
+        c= (n//5) + 1
+        if n < 15:
+            if n==5: return 5
+            if n==10: return 20
+            r=(n + 1)%c
+            q=((n + 1)//c) - 1
+            return q**(c - r)*(q + 1)**r
+        else:
+            r = n % 5
+            return 3**(4 - r)*4**(c - 4 + r)
