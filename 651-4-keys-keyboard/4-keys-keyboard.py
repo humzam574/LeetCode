@@ -1,7 +1,7 @@
 class Solution:
     def maxA(self, n: int) -> int:
         #some sort of bottom up dp
-        @cache
+        @lru_cache(None)
         def bt(curr, cb, cnt):
             if curr >= n - 3:
                 return cnt + (n - curr) * cb
