@@ -13,7 +13,5 @@ class Solution:
 
         # 10, 4, -8, 7
         # 3, -1, 7, 0
-        print(prefix)
-        print(suffix)
 
         return sum([prefix[i] >= suffix[i] for i in range(len(nums)-1)])
