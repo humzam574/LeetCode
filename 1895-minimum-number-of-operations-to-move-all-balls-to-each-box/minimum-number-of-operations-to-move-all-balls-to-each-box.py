@@ -7,6 +7,7 @@ class Solution:
         
         ans = [curr] + [0] * (len(boxes) - 1)
         for i in range(1, len(ans)):
-            ans[i] = ans[i - 1] + delta
+            curr += delta
+            ans[i] = curr
             delta += 2*(boxes[i] == '1')
         return ans
