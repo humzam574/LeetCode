@@ -5,9 +5,10 @@ class Solution:
         for i, char in enumerate(boxes):
             if char == '1': delta, curr = delta - 1, curr + i
         
-        ans = [curr] + [0] * (len(boxes) - 1)
-        for i in range(1, len(ans)):
-            curr += delta
-            ans[i] = curr
+        #ans = [curr] + [0] * (len(boxes) - 1)
+        ans = [curr]
+        for i in range(1, len(boxes)):
+            ans.append(ans[-1] + delta)
+            #ans[i] = ans[i - 1] + delta
             delta += 2*(boxes[i] == '1')
         return ans
