@@ -1,10 +1,2 @@
 class Solution:
-    def stringMatching(self, words: List[str]) -> List[str]:
-        words.sort(key = lambda x : len(x))
-        ans = []
-        for i, word in enumerate(words):
-            for option in words[i+1:]:
-                if word in option:
-                    ans.append(word)
-                    break
-        return ans
+    def stringMatching(self,w):return[i for i in w if' '.join(w).count(i)>1]
