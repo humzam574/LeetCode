@@ -1,7 +1,5 @@
 class Solution:
     def triangleNumber(self, nums: List[int]) -> int:
-        #pick a ptr
-        #search thru the rest and find two numbers where the diff is less than ptr
         count = 0
         nums.sort()
         for i in range(len(nums) - 2):
