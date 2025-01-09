@@ -1,8 +1,3 @@
 class Solution:
     def valueAfterKSeconds(self, n: int, k: int) -> int:
-        arr = [1] * n
-        for i in range(k):
-            for j in range(1, n):
-                arr[j] += arr[j - 1]
-            #print(arr)
-        return arr[-1] % (10 ** 9 + 7)
+        return comb(k+n-1,n-1) % 1000000007
