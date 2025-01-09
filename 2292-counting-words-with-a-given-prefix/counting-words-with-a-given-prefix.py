@@ -1,2 +1,2 @@
 class Solution:
-    def prefixCount(self, words: List[str], pref: str) -> int: return sum(words[i].startswith(pref) for i in range(len(words)))
+    def prefixCount(self,w,p):return sum(w[i].startswith(p)for i in range(len(w)))
