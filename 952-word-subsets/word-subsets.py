@@ -1,18 +1,15 @@
 class Solution:
     def wordSubsets(self, words1: List[str], words2: List[str]) -> List[str]:
-        dict = defaultdict(int)
-        for word in words2:
-            temp = Counter(word)
-            for k, v in temp.items():
-                dict[k] = max(dict[k], v)
-        ans = []
-        for word in words1:
-            temp = Counter(word)
-            skip = True
-            for k, v in dict.items():
-                if k not in temp or temp[k] < dict[k]:
-                    skip = False
+        ans = set(words1)
+        letters = {}
+        for i in words2:
+            for j in i:
+                count = i.count(j)
+                if j not in letters or count > letters[j]:
+                    letters[j] = count
+        for i in words1:
+            for j in letters:
+                if i.count(j) < letters[j]:
+                    ans.remove(i)
                     break
-            if skip:
-                ans.append(word)
-        return ans
+        return list(ans)
