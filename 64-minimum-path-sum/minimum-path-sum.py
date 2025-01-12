@@ -1,8 +1,7 @@
 class Solution:
     def minPathSum(self, grid: List[List[int]]) -> int:
         m, n = len(grid), len(grid[0])
-        dp = [inf] * n
-        dp[0] = 0
+        dp = [0] + [2**24] * (n - 1)
         for i in range(m):
             for j in range(n):
                 if j == 0:
