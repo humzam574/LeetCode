@@ -8,4 +8,4 @@ class Solution:
                     dp[j] += grid[i][j]
                 else:
                     dp[j] = dp[j] + grid[i][j] if dp[j] < dp[j - 1] else dp[j - 1] + grid[i][j]
-        return dp[n - 1]
+        return dp[-1]
