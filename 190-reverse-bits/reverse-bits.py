@@ -1,6 +1,8 @@
 class Solution:
-    def reverseBits(self,n):
-        n=bin(n)[2:].zfill(32)
-        #,print(n)
-        n=n[::-1]
-        return int(n,2)
+    def reverseBits(self, n: int) -> int:
+        ret, power = 0, 31
+        while n:
+            ret += (n & 1) << power
+            n = n >> 1
+            power -= 1
+        return ret
