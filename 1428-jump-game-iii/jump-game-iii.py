@@ -1,5 +1,10 @@
+def reach(ps, i, n):
+    if i < 0 or i >= n: return False
+    if ps[i] == 0:      return True
+    if ps[i] == -1:     return False
+    s = ps[i]; ps[i] = -1
+    return reach(ps, i + s, n) or reach(ps, i - s, n)
+
 class Solution:
-    def canReach(self, arr, i):
-        if i < 0 or i >= len(arr) or arr[i] < 0: return False
-        temp = arr[i]; arr[i] = -1
-        return temp == 0 or self.canReach(arr, i - temp) or self.canReach(arr, i + temp)
+    def canReach(self, ps: List[int], s: int) -> bool:
+        return reach(ps, s, len(ps))
