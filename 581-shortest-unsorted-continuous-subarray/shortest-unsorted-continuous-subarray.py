@@ -4,7 +4,7 @@ class Solution:
         for i in range(l):
             if nums[i] >= mx: mx = nums[i]
             else: r = i
-        for i in range(l - 1, -1, -1):
+        for i in range(r, -1, -1):
             if nums[i] <= mn: mn = nums[i]
             else: l = i
         return max(0, r - l + 1)
