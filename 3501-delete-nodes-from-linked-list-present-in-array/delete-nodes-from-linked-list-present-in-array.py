@@ -11,7 +11,8 @@ class Solution:
         temp = head
         if not temp: return None
         while temp and temp.next:
-            while temp.next and temp.next.val in nums:
+            if temp.next.val in nums:
                 temp.next = temp.next.next
-            temp = temp.next
+            else:
+                temp = temp.next
         return head
