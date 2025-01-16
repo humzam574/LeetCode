@@ -1,5 +1,5 @@
 class Solution:
     def maxSumAfterOperation(self, nums: List[int]) -> int:
-        dp = [[-inf, -inf] for i in range(len(nums))]; dp[0] = [nums[0], nums[0] ** 2]; curr = max(0, nums[0])
-        for i in range(1, len(nums)): curr = max(nums[i], curr + nums[i]); dp[i][0] = curr; dp[i][1] = max(dp[i - 1][1] + nums[i], dp[i - 1][0] + nums[i]**2, nums[i]**2)
-        return max(dp[i][1] for i in range(len(dp)))
+        res = w = wo = 0
+        for num in nums: wo, w = wo+num, max(w+num, wo+num*num); wo = max(0, wo); res = max(res, w)
+        return res
