@@ -4,27 +4,21 @@
 #         self.val = val
 #         self.next = next
 class Solution:
-    def modifiedList(self, nums: List[int], head: Optional[ListNode]) -> Optional[ListNode]:
-        to_delete = set(nums)
-        
-        # Create a dummy node that points to the head of the list
-        dummy = ListNode(0)
-        dummy.next = head
-        
-        # Use two pointers: current to iterate and prev to manage the deletion
-        prev = dummy
-        current = head
-        
-        while current:
-            if current.val in to_delete:
-                # Skip the node to be deleted
-                prev.next = current.next
+    def modifiedList(
+        self, nums: List[int], head: Optional[ListNode]
+    ) -> Optional[ListNode]:
+        if not head or not nums:
+            return head
+        nums = set(nums)
+        while head and head.val in nums:
+            head = head.next
+        if not head:
+            return head
+        curr = head
+        while curr.next:
+            if curr.next.val in nums:
+                curr.next = curr.next.next
             else:
-                # Move prev to current
-                prev = current
-            
-            # Move to the next node
-            current = current.next
-        
-        # Return the modified list, which is next of dummy
-        return dummy.next
+                curr = curr.next
+
+        return head
