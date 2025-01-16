@@ -10,7 +10,7 @@ class Solution:
             head = head.next
         temp = head
         if not temp: return None
-        while temp and temp.next:
+        while temp.next:
             if temp.next.val in nums:
                 temp.next = temp.next.next
             else:
