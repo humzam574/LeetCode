@@ -1,4 +1,16 @@
 class Solution:
-    def minDifference(self, n: List[int]) -> int: n.sort(); return 0 if len(n) < 5 else min(n[-1] - n[3], n[-2] - n[2], n[-3] - n[1], n[-4] - n[0])
+    def minDifference(self, nums: List[int]) -> int:
+        n: int = len(nums)
+        if n <= 4:
+            return 0
+        elif n < 8:
+            nums.sort()
+        else:
+            nums = sorted(heapq.nsmallest(4, nums)) + sorted(heapq.nlargest(4, nums))
 
-        
+        return min(
+            nums[-4] - nums[0],
+            nums[-1] - nums[3],
+            nums[-3] - nums[1],
+            nums[-2] - nums[2],
+        )
