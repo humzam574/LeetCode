@@ -5,14 +5,26 @@
 #         self.next = next
 class Solution:
     def modifiedList(self, nums: List[int], head: Optional[ListNode]) -> Optional[ListNode]:
-        nums = set(nums)
-        while head and head.val in nums:
-            head = head.next
-        temp = head
-        if not temp: return None
-        while temp.next:
-            if temp.next.val in nums:
-                temp.next = temp.next.next
+        to_delete = set(nums)
+        
+        # Create a dummy node that points to the head of the list
+        dummy = ListNode(0)
+        dummy.next = head
+        
+        # Use two pointers: current to iterate and prev to manage the deletion
+        prev = dummy
+        current = head
+        
+        while current:
+            if current.val in to_delete:
+                # Skip the node to be deleted
+                prev.next = current.next
             else:
-                temp = temp.next
-        return head
+                # Move prev to current
+                prev = current
+            
+            # Move to the next node
+            current = current.next
+        
+        # Return the modified list, which is next of dummy
+        return dummy.next
