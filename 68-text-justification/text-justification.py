@@ -1,49 +1,22 @@
 class Solution:
-    def fullJustify(self, words: List[str], maxWidth: int) -> List[str]:
-        #find the number of words in a given line
-        #distribute spaces evenly, throw remainder in the first gap
-        #process the last group
+    def fullJustify(self, words: List[str], mw: int) -> List[str]:
         def process(l, r):
-            #cmd
-
-            if r == l+1:
-                #stri = words[l]
-                return words[l] + (" " * (maxWidth - len(words[l])))
-            #print(str(l) + " " + str(r))
-            sp = maxWidth - sum(len(w) for w in words[l:r])
-            each = sp // (r - l - 1)
-            rm = sp % (r - l - 1)
-            #print(str(sp) + " " + str(each) + " " + str(rm))
-            #print()
-            stri = words[l]
+            if r == l + 1: return words[l] + (" " * (mw - len(words[l])))
+            sp = mw - sum(len(w) for w in words[l:r]); each, rm, stri = sp // (r - l - 1), sp % (r - l - 1), words[l]
             for i in range(l + 1, r):
                 stri += (each * " ")
-                if rm and (maxWidth - len(stri)):
-                    stri += " "
-                    rm -= 1
+                if rm and (mw - len(stri)): stri, rm = stri + " ", rm - 1
                 stri += words[i]
-                #print(stri)
-            return stri# + (" " * (maxWidth - len(stri)))
-        ans = []
-        r = 0
-        l = 0
-        curr = len(words[0])
+            return stri
+        ans, r, l, curr = [], 0, 0, len(words[0])
         for r in range(1, len(words)):
-            if curr <= maxWidth and curr + 1 + len(words[r]) > maxWidth:
+            if curr <= mw and curr + 1 + len(words[r]) > mw:
                 if l != r: ans.append(process(l, r))
-                curr = len(words[r])
-                l = r
-            else:
-                curr += 1 + len(words[r])
-                
-        #final one
-        curr = 0
-        temp = ""
+                curr, l = len(words[r]), r
+            else: curr += 1 + len(words[r])
+        curr, temp = 0, ""
         for i in range(l, len(words)):
             temp += words[i]
-            if len(temp) - maxWidth:
-                temp+=" "
+            if len(temp) - mw: temp+=" "
             curr += 1 + len(words[i])
-        temp += (" " * (maxWidth - curr))
-        ans.append(temp)
-        return ans
+        temp += (" " * (mw - curr)); ans.append(temp); return ans
