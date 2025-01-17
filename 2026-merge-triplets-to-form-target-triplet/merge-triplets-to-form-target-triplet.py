@@ -1,9 +1,12 @@
 class Solution:
     def mergeTriplets(self, triplets: List[List[int]], target: List[int]) -> bool:
-        f = s = t = False
-        for trip in triplets:
-            if trip[0] == target[0] and trip[1] <= target[1] and trip[2] <= target[2]: f = True
-            if trip[1] == target[1] and trip[0] <= target[0] and trip[2] <= target[2]: s = True
-            if trip[2] == target[2] and trip[0] <= target[0] and trip[1] <= target[1]: t = True
-            if f and s and t: return True
+        first = second = third = False
+        for triplet in triplets:
+            if triplet[0] == target[0] and triplet[1] <= target[1] and triplet[2] <= target[2]:
+                first = True
+            if triplet[1] == target[1] and triplet[0] <= target[0] and triplet[2] <= target[2]:
+                second = True
+            if triplet[2] == target[2] and triplet[0] <= target[0] and triplet[1] <= target[1]:
+                third = True
+            if first and second and third: return True
         return False
