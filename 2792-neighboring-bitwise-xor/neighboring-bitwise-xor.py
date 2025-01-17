@@ -6,8 +6,4 @@ class Solution:
         #d[i]
 
         #1 0 1 = False
-        ans = 0
-        for num in derived:
-            ans = ans ^ num
-        return not bool(ans)
-        
+        return sum(derived) % 2 == 0
