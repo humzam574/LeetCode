@@ -7,15 +7,13 @@ class Solution:
             for y in range(n):
                 if ans[x][y] == 1:
                     dq.append((x,y))
-                    ans[x][y] = 0
-                else:
-                    ans[x][y] = inf
+                ans[x][y] -= 1
         while dq:
             x, y = dq.popleft()
             val = ans[x][y] + 1
             for dx, dy in ((1, 0), (0, 1), (-1, 0), (0, -1)):
                 nx, ny = x+dx, y+dy
-                if 0 <= nx < m and 0 <= ny < n and ans[nx][ny] == inf:
+                if 0 <= nx < m and 0 <= ny < n and ans[nx][ny] == -1:
                     ans[nx][ny] = val
                     dq.append((nx, ny))
         return ans
