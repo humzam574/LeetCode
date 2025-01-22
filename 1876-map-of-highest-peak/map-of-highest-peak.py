@@ -1,21 +1,26 @@
 class Solution:
-    def highestPeak(self, ans: List[List[int]]) -> List[List[int]]:
-        dq = deque()
-        m = len(ans)
-        n = len(ans[0])
-        for x in range(m):
-            for y in range(n):
-                if ans[x][y] == 1:
-                    dq.append((x,y))
-                    ans[x][y] = 0
-                else:
-                    ans[x][y] = inf
-        while dq:
-            x, y = dq.popleft()
-            val = ans[x][y] + 1
-            for dx, dy in ((1, 0), (0, 1), (-1, 0), (0, -1)):
-                nx, ny = x+dx, y+dy
-                if 0 <= nx < m and 0 <= ny < n and ans[nx][ny] == inf:
-                    ans[nx][ny] = val
-                    dq.append((nx, ny))
-        return ans
+    def highestPeak(self, isWater: List[List[int]]) -> List[List[int]]:
+        q = deque()
+        n = len(isWater[0])
+        m = len(isWater)
+        output = [[-1 for _ in range(n)] for _ in range(m)]
+        for i in range(m):
+            for j in range(n):
+                if isWater[i][j] == 1:
+                    output[i][j] = 0
+                    q.append((i,j))
+        while q:
+            i, j = q.popleft()
+            if 0 < i < m and output[i-1][j] == -1:
+                output[i-1][j] =  output[i][j] + 1
+                q.append((i-1, j))
+            if 0 < j < n and output[i][j-1] == -1:
+                output[i][j-1] = output[i][j] + 1
+                q.append((i,j-1))
+            if 0 <= j < n - 1 and output[i][j + 1] == -1:
+                output[i][j + 1] = output[i][j] + 1
+                q.append((i,j+1))
+            if 0 <= i < m - 1 and output[i + 1][j] == -1:
+                output[i + 1][j] = output[i][j] + 1
+                q.append((i+1,j))
+        return output
