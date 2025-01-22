@@ -3,8 +3,7 @@ class Solution:
         m, n, whole, ans, tot = len(grid), len(grid[0]), False, 0, 0
         for row in grid:
             for num in row:
-                if num != -1:
-                    whole, tot = True, tot + num
+                if num != -1: whole, tot = True, tot + num
         if whole == False and ans != 0: return -1
         for i in range(m):
             for j in range(n):
