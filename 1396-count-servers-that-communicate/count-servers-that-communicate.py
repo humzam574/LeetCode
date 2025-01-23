@@ -8,13 +8,10 @@ class Solution:
         for x in range(m):
             for y in range(n):
                 if grid[x][y] == 1:
-                    tot += 1
-                    if rows[x] != 2:
-                        rows[x] += 1
-                    if cols[y] != 2:
-                        cols[y] += 1
+                    rows[x] += 1
+                    cols[y] += 1
         for x in range(m):
             for y in range(n):
                 if rows[x] == 1 and cols[y] == 1 and grid[x][y] == 1:
                     tot -= 1
-        return tot
+        return sum(rows) + tot
