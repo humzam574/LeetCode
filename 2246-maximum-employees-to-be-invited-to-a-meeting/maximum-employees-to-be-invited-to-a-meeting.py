@@ -1,60 +1,47 @@
 class Solution:
     def maximumInvitations(self, favorite: List[int]) -> int:
-        adj=defaultdict(list)
-        transpose=defaultdict(list)
-        #first we apply kosaraju, its a cycle, it is that answer itself
-        #or we can combine multiple 2 sized connected components (if 0's fav is 1 and 1s fav is 0) ->one exception case to consider
-        #max of both the above conditions
-        for i in range(len(favorite)):
-            adj[i].append(favorite[i])
-            transpose[favorite[i]].append(i)
-        
-        stack=[]
-        visited=[False]*len(favorite)
-        def dfs(node):
-            visited[node]=True
-            for n in adj[node]:
-                if not visited[n]:
-                    dfs(n)
-            stack.append(node)
-        
-        for i in range(len(favorite)):
-            if not visited[i]:
-                dfs(i)
-        
-        sccs=[] #list of sets of each scc
-        scc=set()
-        visited=[False]*len(favorite)
-        def traverseForScc(node):
-            visited[node]=True
-            scc.add(node)
-            for n in transpose[node]:
-                if not visited[n]:
-                    traverseForScc(n)
-        
-        while stack:
-            top = stack.pop()
-            if not visited[top]:
-                scc = set()
-                traverseForScc(top)
-                sccs.append(scc)
-        
-        ans=max([len(scc) if len(scc)!=2 else -1 for scc in sccs])
-        #above was from kosaraju
+        n = len(favorite)
+        visited_time = [0] * n
+        the_time = 1
+        ans = 0
+        dd_node_dict = {}
+        for i in range(n):
+            if visited_time[i]:
+                continue
+            start = the_time
+            tmp = i
+            visited_time[tmp] = the_time
+            while not visited_time[favorite[tmp]]:
+                the_time += 1
+                tmp = favorite[tmp]
+                visited_time[tmp] = the_time
+            the_time += 1
+            circle_end = favorite[tmp]
+            if visited_time[circle_end] >= start:
+                new_circle = the_time-visited_time[circle_end]
+                ans = max(ans, new_circle)
+                if new_circle == 2:
+                    dd_node_dict[tmp] = {
+                        'l': [0] * n,
+                        'r': [0] * n
+                    }
+                    start_idx = i
+                    for back_time in range(start, the_time):
+                        dd_node_dict[tmp]['l'][start_idx] = the_time - back_time - 1
+                        start_idx = favorite[start_idx]
+                    dd_node_dict[tmp]['r'][tmp] = 1
+            else:
+                for dd_node in dd_node_dict:
+                    for k in ['l', 'r']:
+                        if dd_node_dict[dd_node][k][circle_end] > 0:
+                            start_idx = i
+                            for back_time in range(start, the_time):
+                                dd_node_dict[dd_node][k][start_idx] = the_time - back_time + dd_node_dict[dd_node][k][circle_end]
+                                start_idx = favorite[start_idx]
+        dd_link_num = 0
+        for dd_node in dd_node_dict:
+            dd_link_num += max(dd_node_dict[dd_node]['l']) + max(dd_node_dict[dd_node]['r'])
 
-        def findLongestArm(a,b):
-            l=0
-            for node in transpose[a]:
-                if node!=b:
-                    l=max(l,1+findLongestArm(node,b))
-            return l
-
-        twoNodeSccs = 0
-        for n1,n2 in [scc for scc in sccs if len(scc)==2]:
-            twoNodeSccs+= 2 + findLongestArm(n1,n2) + findLongestArm(n2,n1)
-        return max(ans,twoNodeSccs)
-
-            
-        
-
-        
+        return ans if ans > dd_link_num else dd_link_num
+                
+                
