@@ -8,4 +8,6 @@ class Solution:
                 curr = lcm(curr, nums[j])
                 if curr == k:
                     ans += 1
+                elif curr > k:
+                    break
         return ans
