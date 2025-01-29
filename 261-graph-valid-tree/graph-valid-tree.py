@@ -1,26 +1,21 @@
 class Solution:
     def validTree(self, n: int, edges: List[List[int]]) -> bool:
-        #n - 1 nodes
-        self.graph = defaultdict(list)
-        for a, b in edges:
-            self.graph[a].append(b)
-            self.graph[b].append(a)
-        #print(self.graph)
-        arr = [False] * n
-        def dfs(curr, prev, p):
-            arr[curr] = True
-            for item in self.graph[curr]:
-                if item == p: continue
-                if item in prev:
-                    print(item)
-                    return False
-                prev.add(item)
-                if not dfs(item, prev, curr):
-                    return False
-                prev.remove(item)
-            return True
-        if not dfs(0, set(), None):
-            return False
-        for item in arr:
-            if not item: return False
-        return True
+        def dfs(node, is_connected):
+            if node in is_connected:
+                return
+
+            is_connected.add(node)
+            for neighbor in dag[node]:
+                dfs(neighbor, is_connected)
+        v, e = n, len(edges)
+        if v - 1 != e: return False
+
+        dag = [[] for _ in range(v)]
+        for i, j in edges:
+            dag[i].append(j)
+            dag[j].append(i)
+        is_connected = set()
+        dfs(0, is_connected)
+        return len(is_connected) == v
+
+    
