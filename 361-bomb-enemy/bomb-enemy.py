@@ -1,51 +1,16 @@
 class Solution:
     def maxKilledEnemies(self, grid: List[List[str]]) -> int:
-        m, n = len(grid), len(grid[0])
+        m, n, ans = len(grid), len(grid[0]), 0
         for x in range(m):
-            curr = 0
-            prev = 0
+            curr = prev = 0
             for i in range(n):
-                if grid[x][i] == 'W':
-                    for j in range(prev, i):
-                        if grid[x][j] == '0':
-                            grid[x][j] = curr
-                    curr = 0
-                    prev = i + 1
-                if grid[x][i] == 'E':
-                    curr += 1
-            for j in range(prev, n):
-                if grid[x][j] == '0':
-                    grid[x][j] = curr
-            
-        # for row in grid:
-        #     print(row)
+                for j in range(prev,i if grid[x][i] == 'W' else -1): grid[x][j] = curr if grid[x][j] == '0' else grid[x][j]
+                curr, prev = curr + int(grid[x][i] == 'E') if grid[x][i] != 'W' else 0, i + 1 if grid[x][i] == 'W' else prev
+            for j in range(prev, n): grid[x][j] = curr if grid[x][j] == '0' else grid[x][j]
         for y in range(n):
-            curr = 0
-            prev = 0
+            curr = prev = 0
             for i in range(m):
-                if grid[i][y] == 'W':
-                    for j in range(prev, i):
-                        if isinstance(grid[j][y], int):
-                            grid[j][y] += curr
-                        elif grid[j][y] == '0':
-                            grid[j][y] = curr
-                    curr = 0
-                    prev = i + 1
-                if grid[i][y] == 'E':
-                    curr += 1
-            for j in range(prev, m):
-                if isinstance(grid[j][y], int):
-                    grid[j][y] += curr
-                elif grid[j][y] == '0':
-                    grid[j][y] = curr
-            
-        #print()
-        #print()
-        # for row in grid:
-        #     print(row)
-        ans = 0
-        for row in grid:
-            for item in row:
-                if isinstance(item, int):
-                    ans = max(ans, item)
-        return ans
+                for j in range(prev, i if grid[i][y] == 'W' else -1): grid[j][y] = grid[j][y] + curr if isinstance(grid[j][y], int) else curr if grid[j][y] == '0' else grid[j][y]
+                curr, prev = curr + (grid[i][y] == 'E') if grid[i][y] != 'W' else 0, prev if grid[i][y] != 'W' else i + 1
+            for j in range(prev, m): grid[j][y] = grid[j][y] + curr if isinstance(grid[j][y], int) else curr if grid[j][y] == '0' else grid[j][y]
+        return max(max([item if isinstance(item, int) else 0 for item in row]) for row in grid)
