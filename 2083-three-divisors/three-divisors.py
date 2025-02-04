@@ -1,6 +1,13 @@
 class Solution:
     def isThree(self, n: int) -> bool:
-        ans = 0
-        for i in range(2, n):
-            if n % i == 0: ans +=1
-        return ans == 1
+        if n < 2:
+            return False
+        
+        root = int(math.sqrt(n))
+        if root * root != n:
+            return False
+        
+        for i in range(2, root):
+            if root % i == 0:
+                return False
+        return True
