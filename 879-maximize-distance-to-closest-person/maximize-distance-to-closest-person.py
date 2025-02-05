@@ -1,6 +1,8 @@
 class Solution:
     def maxDistToClosest(self, seats: List[int]) -> int:
-        first, last, prev, high = 20000, -1, -1, -1
-        for i in range(len(seats)):
-            if seats[i]: last, first, high, prev = i, min(first, i), max(high, i - prev), i
-        return max(high // 2, i - last, first)
+        res, last, n = 0, -1, len(seats)
+        for i in range(n):
+            if seats[i]:
+                res = max(res, i if last < 0 else (i - last) // 2)
+                last = i
+        return max(res, n - last - 1)
