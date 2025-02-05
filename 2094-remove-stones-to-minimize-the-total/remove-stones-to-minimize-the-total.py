@@ -6,7 +6,7 @@ class Solution:
             t = -heappop(heap)
             
             if t == 0:
-                break
+                return 0
             #ans = ans - t + t//2
             t = t - t // 2
             heappush(heap, -t)
