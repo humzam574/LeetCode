@@ -1,14 +1,17 @@
 class Solution:
     def dividePlayers(self, skill: List[int]) -> int:
-        #[1, 2, 3, 3, 4, 5]
-        n = sum(skill) * 2 / len(skill)
-        skill.sort()
-        l, r = 0, len(skill) - 1
-        ans = 0
-        while l < r:
-            if skill[l] + skill[r] != n:
-                return -1
-            ans += skill[l] * skill[r]
-            l += 1
-            r -= 1
-        return ans
+        tot = sum(skill)
+        if tot%(len(skill)//2) != 0:
+            return -1
+        per_team = tot//(len(skill)//2)
+        ctr = Counter(skill)
+        res = 0
+        for x, f in ctr.items():
+            if x*2 == per_team:
+                if f%2 != 0:
+                    return -1
+            else:
+                if ctr[per_team-x] != f:
+                    return -1
+            res += x*(per_team-x)*f
+        return res//2
