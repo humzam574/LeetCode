@@ -2,11 +2,8 @@ class Solution:
     def validStrings(self, n: int) -> List[str]:
         self.ans = []
         def dfs(curr):
-            if len(curr) == n:
-                self.ans.append(curr)
-                return
-            if not curr or curr[-1] == "1":
-                dfs(curr + "0")
+            if len(curr) == n: self.ans.append(curr); return
+            if curr[-1] == "1": dfs(curr + "0")
             dfs(curr + "1")
-        dfs("")
+        dfs("0"); dfs("1")
         return self.ans
