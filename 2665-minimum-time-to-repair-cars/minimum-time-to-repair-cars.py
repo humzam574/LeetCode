@@ -7,7 +7,7 @@ class Solution:
         #temp -= root(m / r)
 
         l = 0
-        r = 18446744073709551616
+        r = min(ranks) * cars * cars
         #r = 1024
         potential = [inf]
         while l < r:
