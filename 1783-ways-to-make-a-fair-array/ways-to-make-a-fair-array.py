@@ -1,14 +1,19 @@
 class Solution:
     def waysToMakeFair(self, nums: List[int]) -> int:
-        temp, even, odd, ans = [0] * len(nums), nums[0], 0, 0
-        if len(nums) < 2: return 1
-        for i in range(len(nums) - 3, -1, -1):
-            temp[i] = nums[i + 2] + temp[i + 2]
-        for i in range(1, len(nums)):
-            if i % 2:
-                if even + temp[i] == odd + temp[i - 1]: ans += 1
-                odd += nums[i]
+        prefix_even_sum = sum(nums[1::2])
+        prefix_odd_sum = sum(nums[2::2])
+
+        num_fair_array = 0
+        if prefix_odd_sum == prefix_even_sum:
+                num_fair_array += 1
+        
+        for i in range(1,len(nums)):
+            if i % 2 == 1:
+                prefix_even_sum = prefix_even_sum - nums[i] + nums[i-1]
             else:
-                if even + temp[i - 1] == odd + temp[i]: ans += 1
-                even += nums[i]
-        return ans + (temp[0] == temp[1] + nums[1])
+                prefix_odd_sum = prefix_odd_sum - nums[i] + nums[i-1]
+
+            if prefix_odd_sum == prefix_even_sum:
+                num_fair_array += 1
+
+        return num_fair_array
