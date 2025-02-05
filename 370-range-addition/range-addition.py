@@ -6,5 +6,4 @@ class Solution:
             arr[r + 1] -= a
         for i in range(1, len(arr) - 1):
             arr[i] = arr[i - 1] + arr[i]
-        arr.pop()
-        return arr
+        return arr[:-1]
