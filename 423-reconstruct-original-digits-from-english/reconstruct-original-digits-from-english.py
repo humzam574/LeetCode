@@ -1,8 +1,14 @@
 class Solution:
     def originalDigits(self, s: str) -> str:
-        dict, arr, ans = Counter(s), (('z', 'ero', '0'), ('w', 'to', '2'), ('u', 'for', '4'), ('x', 'si', '6'), ('g', 'eiht', '8'), ('f', 'ive', '5'), ('v', 'seen', '7'), ('i', 'nne', '9'),  ('r', 'thee', '3'), ('o', 'ne', '1')), []
-        for i in range(10):
-            if arr[i][0] in dict and dict[arr[i][0]] != 0:
-                val = dict[arr[i][0]]; ans = ans + [arr[i][2]] * val
-                for char in arr[i][1]: dict[char] -= val
-        return ''.join(sorted(ans))
+        dict = Counter(s)
+        z = dict['z']
+        w = dict['w']
+        u = dict['u']
+        f = dict['f'] - u
+        x = dict['x']
+        v = dict['v'] - f
+        g = dict['g']
+        r = dict['r'] - z - u
+        o = dict['o'] - z - w - u
+        n = int((dict['n'] - v - o) // 2)      
+        return '0' * z + '1' * o + '2' * w + '3' * r + '4' * u + '5' * f + '6' * x + '7' * v + '8' * g + '9' * n
