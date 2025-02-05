@@ -1,9 +1,22 @@
 class Solution:
+
     def validStrings(self, n: int) -> List[str]:
-        self.ans = []
-        def dfs(curr):
-            if len(curr) == n: self.ans.append(curr); return
-            if curr[-1] == "1": dfs(curr + "0")
-            dfs(curr + "1")
-        dfs("0"); dfs("1")
-        return self.ans
+
+        if n == 0:
+            return []
+        
+        if n == 1:
+            return [ "0", "1" ]
+
+        sub_val_strs = self.validStrings(n - 1)
+
+        response = []
+        for val_str in sub_val_strs:
+            if val_str[0] == "0":
+                response.append("1" + val_str)
+            else:
+                response.append("1" + val_str)
+                response.append("0" + val_str)
+
+        return response
+        
