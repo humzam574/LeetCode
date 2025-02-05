@@ -1,15 +1,6 @@
 class Solution:
     def closestDivisors(self, num: int) -> List[int]:
-        ans = []
-        delta = 0
-        num += 1
-        for i in range(1, 1+int(math.sqrt(num))):
-            if num % i == 0:
-                ans = sorted([i, num // i])
-                delta = abs(i - num // i)
-        num += 1
-        for i in range(1, 1+int(math.sqrt(num))):
-            if num % i == 0:
-                if abs(i - num // i) < delta:
-                    ans = sorted([i, num//i])
-        return ans
+        upper = int((num+2) ** 0.5)
+        for i in range(upper, 0, -1):
+            if (num+1) % i == 0: return [(num+1)//i, i]
+            if (num+2) % i == 0: return [(num+2)//i, i]
