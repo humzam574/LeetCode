@@ -1,17 +1,7 @@
 class Solution:
-    def findKthBit(self, n: int, k: int) -> str:
-        def reverse(s):
-            temp = []
-            for c in s:
-                if c == "0":
-                    temp.append("1")
-                else:
-                    temp.append("0")
-            return ''.join(temp[::-1])
-        curr = "0"
-        for i in range(n):
-            curr = curr + "1" + reverse(curr)
-            if len(curr) > k:
-                break
-        #print(curr)
-        return curr[k - 1]
+    def findKthBit(self, N: int, K: int, R = True) -> str:
+        if K == 1: return '0' if R else '1'
+        mid = (1 << (N - 1))
+        if K == mid: return '1' if R else '0'
+        if K < mid: return self.findKthBit(N - 1, K, R)
+        return self.findKthBit(N - 1, 2 * mid - K, not R)
