@@ -11,5 +11,7 @@ class Solution:
         curr = "0"
         for i in range(n):
             curr = curr + "1" + reverse(curr)
+            if len(curr) > k:
+                break
         #print(curr)
         return curr[k - 1]
