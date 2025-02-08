@@ -12,7 +12,6 @@ class Solution:
                     temp = a - x - k
                     if temp > 0:
                         curr += temp
-                    #curr += max(0, a - x - k)
             if curr < ans:
                 ans = curr
         return ans
