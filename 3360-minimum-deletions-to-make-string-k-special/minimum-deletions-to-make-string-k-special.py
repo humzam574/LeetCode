@@ -5,6 +5,10 @@ class Solution:
         for x in arr:
             curr = 0
             for a in arr:
-                curr += a if a < x else max(0, a - (x + k))
-            ans = min(ans, curr)
+                if a < x:
+                    curr += a
+                else:
+                    curr += max(0, a - x - k)
+            if curr < ans:
+                ans = curr
         return ans
