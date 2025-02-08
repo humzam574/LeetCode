@@ -1,5 +1,4 @@
 class Solution:
-    def moveZeroes(self, nums: List[int]) -> None:
-        z = 0
-        for i in range(len(nums)):
-            if nums[i] != 0: nums[z], nums[i], z = nums[i], nums[z], z + 1
+    def moveZeroes(self, nums):
+        nums.sort(key = lambda x : int(not bool(x)))
+        return nums
