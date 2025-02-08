@@ -2,22 +2,27 @@
 class NumberContainers:
     
     def __init__(self):
-        self.nums = defaultdict(SortedSet)
-        self.idx = {}
-        
+        self.indexToNum = {}
+        self.numToIndices = {}
+
     def change(self, index: int, number: int) -> None:
-        if index in self.idx:
-            prev = self.idx[index]
-            self.nums[prev].remove(index)
-            if not self.nums[prev]:
-                del self.nums[prev]
-        self.idx[index] = number
-        self.nums[number].add(index)
-        
+        self.indexToNum[index] = number
+        if number not in self.numToIndices:
+            self.numToIndices[number] = []
+        heapq.heappush(self.numToIndices[number], index)
+
     def find(self, number: int) -> int:
-        if number in self.nums and self.nums[number]:
-            return self.nums[number][0]
+        if number not in self.numToIndices:
+            return -1
+        pq = self.numToIndices[number]        
+        while pq:
+            currIndex = pq[0]
+            if self.indexToNum[currIndex] != number:
+                heapq.heappop(pq)
+            else:
+                return currIndex
         return -1
+
         
 
 
