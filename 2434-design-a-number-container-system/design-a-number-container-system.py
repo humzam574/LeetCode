@@ -2,10 +2,6 @@
 class NumberContainers:
     
     def __init__(self):
-        #insert and replace a number
-        #find the smallest index for any given number
-        #dict of heaps
-        #index = number
         self.nums = defaultdict(SortedSet)
         self.idx = {}
         
