@@ -1,12 +1,9 @@
 class Solution:
     def countBadPairs(self, nums: List[int]) -> int:
-        #j - i != nums[j] - nums[i]
-        #+1 from before
-        #NOT nums[i] - i == nums[j] - j
         dict = defaultdict(int)
-        ans = 0
+        ans = len(nums) * (len(nums) - 1) // 2
         for i, n in enumerate(nums):
-            ans += (i - dict[n - i])
+            ans -= dict[n - i]
             dict[n - i] += 1
         return ans
             
