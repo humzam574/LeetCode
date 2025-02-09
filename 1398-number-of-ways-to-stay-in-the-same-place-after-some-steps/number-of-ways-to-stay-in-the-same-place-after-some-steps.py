@@ -1,17 +1,20 @@
 class Solution:
     def numWays(self, steps: int, arrLen: int) -> int:
-        @cache
-        def dp(curr, remain):
-            if remain == 0:
-                return curr == 0
-            ans = dp(curr, remain - 1)
-            if curr > 0:
-                ans = (ans + dp(curr - 1, remain - 1)) % MOD
-            
-            if curr < arrLen - 1:
-                ans = (ans + dp(curr + 1, remain - 1)) % MOD
-                
-            return ans
+        steps += 1
+        m = min(arrLen, 1 + steps // 2)
+        dp = [[0] * steps for i in range(m)]
+        dp[0][0] = 1
+        mod = int(1e9 + 7)
+        for y in range(1, steps):
+            for x in range(m):
+                curr = 0
+                if x > 0:
+                    curr += dp[x - 1][y - 1]
+                curr += dp[x][y - 1]
+                if x < m - 1:
+                    curr += dp[x + 1][y - 1]
+                dp[x][y] = curr % mod
+        # for row in dp:
+        #     print(row)
+        return dp[0][-1] % mod
         
-        MOD = 10 ** 9 + 7
-        return int(dp(0, steps))
