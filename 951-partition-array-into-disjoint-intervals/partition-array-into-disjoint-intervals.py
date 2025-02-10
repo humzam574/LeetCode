@@ -12,8 +12,8 @@ class Solution:
             prefix[i] = max(prefix[i - 1], nums[i])
         for i in range(len(nums) - 2, -1, -1):
             suffix[i] = min(suffix[i + 1], nums[i + 1])
-        print(prefix)
-        print(suffix)
+        #print(prefix)
+        #print(suffix)
         for i in range(len(nums)):
             if prefix[i] <= suffix[i]:
                 return min(len(nums) - 1, i + 1)
