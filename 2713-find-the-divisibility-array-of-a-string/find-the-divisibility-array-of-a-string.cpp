@@ -1,14 +1,11 @@
 class Solution {
 public:
     vector<int> divisibilityArray(string word, int m) {
-        const unsigned int wl = word.length();
-        vector<int> ans;
-        long num = 0;
-        for (unsigned int i = 0; i < wl; i++) {
-            num *= 10;
-            num += word[i] - '0';
-            num %= m;
-            ans.push_back(num == 0);
+        vector<int> ans(word.size(), 0);
+        long long t = 0;
+        for(int i = 0; i < word.size(); ++i){
+            t = (t * 10 + (word[i] - 48) ) % m;
+            if(t == 0) ans[i] = 1; 
         }
         return ans;
     }
