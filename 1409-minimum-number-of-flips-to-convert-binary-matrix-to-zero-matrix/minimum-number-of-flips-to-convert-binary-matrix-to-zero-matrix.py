@@ -1,12 +1,30 @@
 class Solution:
-    def minFlips(self, G: List[List[int]]) -> int:
-        M, N = len(G), len(G[0])
-        P = [(i,j) for i,j in itertools.product(range(M),range(N))]
-        for n in range(M*N+1):
-            for p in itertools.permutations(P,n):
-                H = list(map(list,G))
-                for (x,y) in p:
-                    for (i,j) in (x,y-1),(x,y),(x,y+1),(x-1,y),(x+1,y):
-                        if 0 <= i < M and 0 <= j < N: H[i][j] = 1 - H[i][j]
-                if max(max(H)) == 0: return n
+    def minFlips(self, mat: List[List[int]]) -> int:
+        m,n=len(mat),len(mat[0])
+        def convert_to_bit(M):
+            start=0
+            for i in range(m):
+                for j in range(n):
+                    start|=M[i][j]<<(i*n+j)
+            return start
+        init=convert_to_bit(mat)
+        Q=deque([(0,init)])
+        seen={init}
+        while Q:
+            step,curr=Q.popleft()
+            if curr==0:
+                return step
+            for r in range(m):
+                for c in range(n):
+                    temp=curr
+                    for dr,dc in [(0,0),(1,0),(-1,0),(0,1),(0,-1)]:
+                        nr,nc=r+dr,c+dc
+                        if 0<=nr<m and 0<=nc<n:
+                            temp^=1<<(nr*n+nc)
+                    if temp not in seen:
+                        
+                        Q.append((step+1,temp))
+                        seen.add(temp)
+                        
         return -1
+                    
