@@ -1,25 +1,13 @@
 class Solution:
     def numSubarrayBoundedMax(self, nums: List[int], left: int, right: int) -> int:
-        ans = 0
-        l = 0
-        for r, n in enumerate(nums):
-            if n > right:
-                delta = r - l
-                if delta > 0:
-                    ans += (delta * (delta + 1)//2)
-                l = r + 1
-        delta = r - l + 1
-        if delta > 0:
-            ans += (delta * (delta + 1)//2)
-        right = left - 1
-        l = 0
-        for r, n in enumerate(nums):
-            if n > right:
-                delta = r - l
-                if delta > 0:
-                    ans -= (delta * (delta + 1)//2)
-                l = r + 1
-        delta = r - l + 1
-        if delta > 0:
-            ans -= (delta * (delta + 1)//2)
-        return ans
+        def countSubarrays(bound):
+            curr = 0
+            count = 0
+            for num in nums:
+                if num <= bound:
+                    curr += 1
+                    count += curr
+                else:
+                    curr = 0
+            return count
+        return countSubarrays(right) - countSubarrays(left - 1)
