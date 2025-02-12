@@ -2,11 +2,8 @@ class Solution:
     def minFlips(self, mat: List[List[int]]) -> int:
         m = len(mat)
         n = len(mat[0])
-        high = int(2**(m*n))
-        #print(high)
-        arr = [i for i in range(high)]
         ans = 10
-        for bits in range(high):
+        for bits in range(int(2**(m*n))):
             temp = [row[:] for row in mat]
             inc = 0
             for x in range(m):
