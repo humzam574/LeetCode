@@ -10,4 +10,20 @@ class Solution:
                 else:
                     curr = 0
             return count
-        return countSubarrays(right) - countSubarrays(left - 1)
+        curr = 0
+        count = 0
+        for num in nums:
+            if num <= right:
+                curr += 1
+                count += curr
+            else:
+                curr = 0
+        curr = 0
+        right = left - 1
+        for num in nums:
+            if num <= right:
+                curr += 1
+                count -= curr
+            else:
+                curr = 0
+        return count
