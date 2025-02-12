@@ -3,7 +3,11 @@ class Solution:
         dict = {}
         ans = -1
         for num in nums:
-            temp = sum(int(char) for char in str(num))
+            temp = 0
+            temp2 = num
+            while temp2:
+                temp += temp2 % 10
+                temp2 //= 10
             #print(temp)
             if temp in dict:
                 val2 = dict[temp]
