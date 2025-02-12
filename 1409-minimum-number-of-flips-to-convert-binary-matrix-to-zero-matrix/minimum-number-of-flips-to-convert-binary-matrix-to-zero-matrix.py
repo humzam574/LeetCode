@@ -1,25 +1,12 @@
 class Solution:
-    def minFlips(self, mat: List[List[int]]) -> int:
-        m = len(mat)
-        n = len(mat[0])
-        ans = 10
-        for bits in range(int(2**(m*n))):
-            temp = [row[:] for row in mat]
-            inc = 0
-            for x in range(m):
-                for y in range(n):
-                    if (bits >> inc) & 1:
-                        temp[x][y] ^= 1
-                        for dx, dy in ((1,0), (0,1), (-1,0), (0, -1)):
-                            nx, ny = x+dx, y+dy
-                            if 0 <= nx < m and 0 <= ny < n:
-                                temp[nx][ny] ^= 1
-                    inc += 1
-            update = True
-            for row in temp:
-                if 1 in row:
-                    update = False
-                    break
-            if update:
-                ans = min(ans, bin(bits).count('1'))
-        return -1 if ans == 10 else ans
+    def minFlips(self, G: List[List[int]]) -> int:
+        M, N = len(G), len(G[0])
+        P = [(i,j) for i,j in itertools.product(range(M),range(N))]
+        for n in range(M*N+1):
+            for p in itertools.permutations(P,n):
+                H = list(map(list,G))
+                for (x,y) in p:
+                    for (i,j) in (x,y-1),(x,y),(x,y+1),(x-1,y),(x+1,y):
+                        if 0 <= i < M and 0 <= j < N: H[i][j] = 1 - H[i][j]
+                if max(max(H)) == 0: return n
+        return -1
