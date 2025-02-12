@@ -15,6 +15,11 @@ class Solution:
                             if 0 <= nx < m and 0 <= ny < n:
                                 temp[nx][ny] ^= 1
                     inc += 1
-            if sum(sum(row) for row in temp) == 0:
+            update = True
+            for row in temp:
+                if 1 in row:
+                    update = False
+                    break
+            if update:
                 ans = min(ans, bin(bits).count('1'))
         return -1 if ans == 10 else ans
