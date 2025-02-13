@@ -4,7 +4,5 @@ class Solution:
         count = 0
         while nums[0] < k:
             count += 1
-            one = heappop(nums)
-            two = heappop(nums)
-            heappush(nums, one*2 + two)
+            heappush(nums, heappop(nums)*2 + heappop(nums))
         return count
