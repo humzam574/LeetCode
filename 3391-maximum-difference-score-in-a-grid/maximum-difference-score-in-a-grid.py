@@ -1,7 +1,6 @@
 class Solution:
     def maxScore(self, grid: List[List[int]]) -> int:
-        m, n = len(grid), len(grid[0])
-        ans = -inf
+        m, n, ans = len(grid), len(grid[0]), -inf
         dp = [[0] * n for i in range(m)]
         dp[0][0] = grid[0][0]
         for x in range(1, m):
