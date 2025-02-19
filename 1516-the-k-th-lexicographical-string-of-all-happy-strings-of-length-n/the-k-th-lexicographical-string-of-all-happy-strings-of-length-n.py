@@ -1,14 +1,14 @@
 class Solution:
     def getHappyString(self, n: int, k: int) -> str:
-        i = 1
-        for p in sorted("".join(p) for p in product(('a', 'b', 'c'), repeat=n)):
-            cont = True
-            for j in range(n - 1):
-                if p[j] == p[j + 1]:
-                    cont = False
-                    break
-            if cont:
-                if i == k:
-                    return p
-                i += 1
-        return ""
+        if k > 3 * 2 ** (n-1): return ""
+        happy = 'abc'
+        bit_string = format(k-1, 'b').zfill(n+1)
+        final_str = [happy[int(bit_string[:2], 2)]]
+        for c in bit_string[2:]:
+            if c == '0':
+                if final_str[-1] == 'a': final_str.append('b')
+                else: final_str.append('a')
+            else:
+                if final_str[-1] == 'c': final_str.append('b')
+                else: final_str.append('c')
+        return ''.join(final_str)
