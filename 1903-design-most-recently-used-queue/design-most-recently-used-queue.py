@@ -1,11 +1,12 @@
 class MRUQueue:
 
     def __init__(self, n: int):
-        self.data = list(range(1, n+1))
+        self.arr = [i for i in range(1, n+1)]
 
     def fetch(self, k: int) -> int:
-        self.data.append(self.data.pop(k-1))
-        return self.data[-1]
+        val = self.arr.pop(k-1)
+        self.arr.append(val)
+        return val
         
 
 
