@@ -4,44 +4,25 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
+import re
 class Solution:
     def recoverFromPreorder(self, traversal: str) -> Optional[TreeNode]:
-        root = TreeNode()
-        rightview = []
-        #step one: process the string
-        idx = 0
-        #1-2--3--4-5--6--7
-        #[0, 1], [1, 2], [2, 3], [2, 4], [1, 5], [2, 6], [2, 7]
-        #1-2--3---4-5--6---7
-        #[0, 1], [1, 2], [2, 3], [3, 4], [1, 5], [2, 6], [3, 7]
-        curr = 0
-        prev = 0
-        n = ""
-        process = []
-        length = 1
-        for i, char in enumerate(traversal):
-            if char == "-":
-                if traversal[i - 1].isdigit():
-                    process.append((curr, int(n)))
-                    length = max(length, curr)
-                    n = ""
-                    curr = 1
-                else:
-                    curr += 1
-            else:
-                n+=char
-        process.append((curr, int(n)))
-        length = max(length, curr)
-        root = TreeNode(process[0][1])
-        temp = root
-        rv = [None] * (length + 1)
-        rv[0] = temp
-        for dep, val in process[1:]:
-            t2 = TreeNode(val)
-            rv[dep] = t2
-            t3 = rv[dep - 1]
-            if not t3.left:
-                t3.left = t2
-            else:
-                t3.right = t2
-        return root
+        dash_map = {}
+        dash_cnt = 0
+        first_num = ""
+        for ch in traversal:
+            if ch == '-': break
+            first_num += ch
+        dash_map[0] = TreeNode(int(first_num))
+        s = re.findall(r'(-+)(\d+)', traversal)
+        for dash, num in s:
+            dash_num = len(dash)
+            num = int(num)
+            n = TreeNode(num)
+            fa = dash_map[dash_num - 1]
+            if not fa.left:
+                fa.left = n
+            elif not fa.right:
+                fa.right = n
+            dash_map[dash_num] = n
+        return dash_map[0]
