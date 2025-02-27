@@ -1,23 +1,16 @@
 class Solution:
     def lenLongestFibSubseq(self, arr: List[int]) -> int:
-        ans = 0
-        search = set(arr)
-        n = len(arr)
-        memo = defaultdict(int)#{}  # Explicit memoization dictionary
-        def fib(x, y):
-            if (x, y) in memo:  # Check if already computed
-                return memo[(x, y)]
-            
-            if (x + y) in search:
-                memo[(x, y)] = 1 + fib(max(x, y), x + y)
-                return memo[(x, y)]
-            
-            #memo[(x, y)] = 0
-            return 0
-
-        # Iterate through all x, y pairs, decrementing j
-        for i in range(n):
-            for j in range(n - 1, i, -1):  # j now decrements instead of incrementing
-                ans = max(ans, 2 + fib(arr[i], arr[j]))
-
-        return ans if ans > 2 else 0
+        lookup = {}
+        res = 0
+        for pos, num in enumerate(arr):
+            lookup[num] = defaultdict(lambda: 2)
+            for prev_pos in range(pos - 1, -1, -1):
+                prev = arr[prev_pos]
+                prev2 = num - prev
+                if prev2 >= prev:
+                    break
+                if prev2 not in lookup:
+                    continue
+                lookup[num][prev] = lookup[prev][prev2] + 1
+                res = max(res, lookup[num][prev])
+        return res
