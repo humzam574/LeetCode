@@ -1,10 +1,13 @@
 class Solution:
     def minSwaps(self, data: List[int]) -> int:
-        offset = data.count(1)
-        curr = data[:offset].count(1)
-        ans = offset - curr
-        for r in range(offset, len(data)):
-            curr += data[r] - data[r-offset]
-            ans = min(ans, offset - curr)
-        return ans
+        k = sum(data) #represents window size
+        if k <= 1: return 0
+        current = sum(data[:k])
+        swaps = k - current
 
+        for r in range(k, len(data)):
+            left, right = data[r - k], data[r]
+            current -= left - right
+            if k - current < swaps:
+                swaps = k - current
+        return swaps
