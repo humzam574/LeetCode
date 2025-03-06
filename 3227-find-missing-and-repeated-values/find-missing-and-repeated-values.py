@@ -5,5 +5,4 @@ class Solution:
         for row in grid:
             for num in row:
                 arr[num] -= 1
-        print(arr)
         return [arr.index(-1), arr.index(1)]
