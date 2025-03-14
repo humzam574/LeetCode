@@ -8,19 +8,19 @@ class Solution:
         #candies.sort(reverse = True)
         if k > sum(candies):
             return 0
-        def check(x):
-            # n = len(candies)
-            # i = 0
-            # while x > 0 and i < n:
-            #     x -= candies[i]//k
-            #     i += 1
-            # return x
-            return sum(c // x for c in candies)
+        # def check(x):
+        #     # n = len(candies)
+        #     # i = 0
+        #     # while x > 0 and i < n:
+        #     #     x -= candies[i]//k
+        #     #     i += 1
+        #     # return x
+        #     return sum(c // x for c in candies)
         l, r = 1, max(candies)
         ans = 0
         while l <= r:
             m = (l + r) // 2
-            v = check(m)
+            v = sum(c // m for c in candies)
             if v >= k:
                 ans = m
                 l = m + 1
