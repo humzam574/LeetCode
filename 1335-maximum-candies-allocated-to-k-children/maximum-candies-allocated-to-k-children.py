@@ -1,29 +1,22 @@
 class Solution:
     def maximumCandies(self, candies: List[int], k: int) -> int:
-        #you can divide each pile candies[i] into any number of sub piles
-        #allocate piles of candies into k children so each child gets equal candies
-        #each child can be allocated from only one pile
+        def ispossible(max_candies):
+            res = 0
+            for candy in  candies:
+                res += candy//max_candies
+            if res >= k:
+                return True
+            return False
 
-        #binary search
-        #candies.sort(reverse = True)
-        if k > sum(candies):
+        if sum(candies) < k:
             return 0
-        # def check(x):
-        #     # n = len(candies)
-        #     # i = 0
-        #     # while x > 0 and i < n:
-        #     #     x -= candies[i]//k
-        #     #     i += 1
-        #     # return x
-        #     return sum(c // x for c in candies)
-        l, r = 1, max(candies)
-        ans = 0
-        while l <= r:
-            m = (l + r) // 2
-            v = sum(c // m for c in candies)
-            if v >= k:
-                ans = m
-                l = m + 1
+
+        left, right = 1, sum(candies)//k
+        while left < right:
+            mid = (left + right)//2 + 1
+            if ispossible(mid):
+                left = mid
             else:
-                r = m - 1
-        return ans
+                right = mid - 1
+        
+        return left
