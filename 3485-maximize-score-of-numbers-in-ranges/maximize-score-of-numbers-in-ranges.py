@@ -28,10 +28,10 @@ class Solution:
             m = (l + r + 1) // 2
             temp = bs(m)
             if bs(m):
-                print("too low for " + str(m))
+                #print("too low for " + str(m))
                 l = m
             else:
-                print("too high for " + str(m))
+                #print("too high for " + str(m))
                 r = m - 1
             # else:
             #     print("reached " + str(m) + " and bs = " + str(bs(m)) + " and r = " + str(r))
