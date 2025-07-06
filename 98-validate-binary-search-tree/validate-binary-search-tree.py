@@ -5,24 +5,14 @@
 #         self.left = left
 #         self.right = right
 class Solution(object):
-    def inorder(self, root, count, ans):
-        if root:
-            self.inorder(root.left, count, ans)
-            #count.append(root.val)
-            #print(count)
-            if count[0] is not None and root.val <= count[0]:
-                ans[0] = -1
-            else:
-                count[0] = root.val
-                self.inorder(root.right, count, ans)
-        #return True
-    def isValidBST(self, root):
-        """
-        :type root: Optional[TreeNode]
-        :rtype: bool
-        """
-        count = [None]
-        ans = [0]
+    def isValidBST(self, root: Optional[TreeNode]) -> bool:
+        def dfs(node, leftLimit, rightLimit):
+            if not node:
+                return True
+            
+            if node.val <= leftLimit or node.val >= rightLimit:
+                return False
+            
+            return dfs(node.left, leftLimit, node.val) and dfs(node.right, node.val, rightLimit)
         
-        self.inorder(root, count, ans)
-        return ans[0] != -1
+        return dfs(root, -float('inf'), float('inf'))
