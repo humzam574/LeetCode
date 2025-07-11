@@ -6,20 +6,16 @@
 #         self.right = None
 
 class Solution:
+    def dfs(self, root, p):
+        if not root:
+            return
+        if root.val>p.val:
+            self.successor = root
+            self.dfs(root.left,p)
+        else:
+            self.dfs(root.right,p)
+
     def inorderSuccessor(self, root: TreeNode, p: TreeNode) -> Optional[TreeNode]:
-        if p.right:
-            curr = p.right
-            while curr.left:
-                curr = curr.left
-            return curr
-        curr = root
-        prev = None
-        v = p.val
-        while curr and curr != p:
-            if v < curr.val:
-                prev = curr
-                curr = curr.left
-            else:
-                curr = curr.right
-        return prev
-            
+        self.successor = None
+        self.dfs(root, p)
+        return self.successor
