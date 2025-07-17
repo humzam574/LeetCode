@@ -3,7 +3,7 @@ class Solution:
         
         for i in range(len(nums)):
             nums[i] %= k
-        print(nums)
+        # print(nums)
         ans = 2
         dp = [[0] * (k) for i in range(k)]
         for v in nums:
