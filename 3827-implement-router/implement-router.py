@@ -1,42 +1,53 @@
 # __import__("atexit").register(lambda: open("display_runtime.txt", "w").write("0"))
-from collections import deque, defaultdict
-from bisect import bisect_left, bisect_right
-from sortedcontainers import SortedList
+from bisect import insort, bisect
 
 class Router:
+
     def __init__(self, memoryLimit: int):
-        self.memoryLimit = memoryLimit
-        self.queue = deque()  # FIFO: [ (source, dest, timestamp) ]
-        self.packetSet = set()  # to detect duplicates
-        self.destMap = defaultdict(SortedList)  # dest -> SortedList of timestamps
+        self.q = deque()
+        self.seen = set()
+        self.limit = memoryLimit
+        self.ts = defaultdict(list)
 
     def addPacket(self, source: int, destination: int, timestamp: int) -> bool:
-        key = (source, destination, timestamp)
-        if key in self.packetSet:
-            return False
+        # check if in seen
+        packet = (source, destination, timestamp)
+        if packet in self.seen: return False
 
-        # Evict oldest if at limit
-        if len(self.queue) == self.memoryLimit:
-            old_src, old_dst, old_time = self.queue.popleft()
-            self.packetSet.remove((old_src, old_dst, old_time))
-            self.destMap[old_dst].remove(old_time)
-
-        self.queue.append(key)
-        self.packetSet.add(key)
-        self.destMap[destination].add(timestamp)
+        # check if maxlen
+        if len(self.q) == self.limit:
+            # if so remove from q
+            # remove from seen
+            to_del = self.q.popleft()
+            self.seen.remove(to_del)
+            idx_to_rm = bisect_left(self.ts[to_del[1]], to_del[2])
+            del self.ts[to_del[1]][idx_to_rm]
+        # add to q
+        self.seen.add(packet)
+        insort(self.ts[destination], timestamp)
+        self.q.append(packet)
         return True
 
-    def forwardPacket(self) -> list:
-        if not self.queue:
-            return []
-
-        source, destination, timestamp = self.queue.popleft()
-        self.packetSet.remove((source, destination, timestamp))
-        self.destMap[destination].remove(timestamp)
-        return [source, destination, timestamp]
+    def forwardPacket(self) -> List[int]:
+        if len(self.q) == 0: return []
+        # remove from q
+        packet = self.q.popleft()
+        # remove from seen
+        self.seen.remove(packet)
+        idx_to_rm = bisect_left(self.ts[packet[1]], packet[2])
+        del self.ts[packet[1]][idx_to_rm]
+        return packet
 
     def getCount(self, destination: int, startTime: int, endTime: int) -> int:
-        timestamps = self.destMap[destination]
-        left = bisect_left(timestamps, startTime)
-        right = bisect_right(timestamps, endTime)
+        lst = self.ts[destination]
+        # print(lst)
+        left = bisect(lst, startTime - 1)
+        right = bisect(lst, endTime)
         return right - left
+
+
+# Your Router object will be instantiated and called as such:
+# obj = Router(memoryLimit)
+# param_1 = obj.addPacket(source,destination,timestamp)
+# param_2 = obj.forwardPacket()
+# param_3 = obj.getCount(destination,startTime,endTime)
