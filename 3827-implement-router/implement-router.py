@@ -1,74 +1,42 @@
-class Router:
+# __import__("atexit").register(lambda: open("display_runtime.txt", "w").write("0"))
+from collections import deque, defaultdict
+from bisect import bisect_left, bisect_right
+from sortedcontainers import SortedList
 
+class Router:
     def __init__(self, memoryLimit: int):
-        self.dq = deque()
-        self.stored = set()
-        self.search = defaultdict(deque)
-        self.lim = memoryLimit
+        self.memoryLimit = memoryLimit
+        self.queue = deque()  # FIFO: [ (source, dest, timestamp) ]
+        self.packetSet = set()  # to detect duplicates
+        self.destMap = defaultdict(SortedList)  # dest -> SortedList of timestamps
 
     def addPacket(self, source: int, destination: int, timestamp: int) -> bool:
-        #if duplicate, return false and dont do anything else
-        #else, if you are at the limit then add and pop from left
-        #if not at limit, just add
-        #append to search and stored
-        tup = (source, destination, timestamp)
-        if tup in self.stored:
+        key = (source, destination, timestamp)
+        if key in self.packetSet:
             return False
-        if len(self.dq) == self.lim:
-            temp = self.dq.popleft()
-            self.stored.remove(temp)
-            self.search[temp[1]].popleft()
-        self.dq.append(tup)
-        self.search[tup[1]].append(tup)
-        self.stored.add(tup)
+
+        # Evict oldest if at limit
+        if len(self.queue) == self.memoryLimit:
+            old_src, old_dst, old_time = self.queue.popleft()
+            self.packetSet.remove((old_src, old_dst, old_time))
+            self.destMap[old_dst].remove(old_time)
+
+        self.queue.append(key)
+        self.packetSet.add(key)
+        self.destMap[destination].add(timestamp)
         return True
 
-    def forwardPacket(self) -> List[int]:
-        #if dq is empty, do nothing just return []
-        if not self.dq:
+    def forwardPacket(self) -> list:
+        if not self.queue:
             return []
-        tup = self.dq.popleft()
-        self.search[tup[1]].popleft()
-        self.stored.remove(tup)
-        return tup
-        # return list(tup)
+
+        source, destination, timestamp = self.queue.popleft()
+        self.packetSet.remove((source, destination, timestamp))
+        self.destMap[destination].remove(timestamp)
+        return [source, destination, timestamp]
 
     def getCount(self, destination: int, startTime: int, endTime: int) -> int:
-        arr = self.search[destination]
-        fl, fr = 0, 0
-        l, r = 0, len(arr)
-        m = 0
-        while l < r:
-            m = (l + r) // 2
-            if arr[m][2] >= startTime:
-                r = m
-            else:
-                l = m + 1
-        fl = l
-        l, r = 0, len(arr)
-        while l < r:
-            m = (l + r) // 2
-            if arr[m][2] > endTime:
-                r = m
-            else:
-                l = m + 1
-        fr = l
-        return fr - fl
-
-        
-
-
-# Your Router object will be instantiated and called as such:
-# obj = Router(memoryLimit)
-# param_1 = obj.addPacket(source,destination,timestamp)
-# param_2 = obj.forwardPacket()
-# param_3 = obj.getCount(destination,startTime,endTime)
-
-
-#necessary ops
-#1. append to the right O(1) DEQ
-#2. get the length O(1) DEQ
-#3. pop from the left O(1) DEQ
-#4. check for duplicates O(1) SET
-#5. do a search with destination and timerange
-    #HAVE A DICT WITH KEY DESTINATION VALUE DEQUE OF TUPS, DO BIN SEARCH O(LOGN)
+        timestamps = self.destMap[destination]
+        left = bisect_left(timestamps, startTime)
+        right = bisect_right(timestamps, endTime)
+        return right - left
