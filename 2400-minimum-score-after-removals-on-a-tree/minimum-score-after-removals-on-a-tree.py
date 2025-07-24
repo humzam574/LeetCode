@@ -25,7 +25,7 @@ class Solution:
             self.adj[a].add(b)
             self.adj[b].add(a)
         self.xors = [0]*n#nums.copy()
-        print(self.adj)
+        # print(self.adj)
         self.kids = [set() for i in range(n)]#{}#{0: set([i for i in range(1, n)])}
         def dfs(curr, prev):
             if len(self.adj[curr]) == 1 and self.adj[curr] == {prev}:
@@ -38,7 +38,7 @@ class Solution:
                 if nb == prev:
                     continue
                 desc.add(nb)
-                print("doing dfs of " + str(nb) + ", " + str(curr))
+                # print("doing dfs of " + str(nb) + ", " + str(curr))
                 dfs(nb, curr)
                 desc = desc | self.kids[nb]
                 val ^= self.xors[nb]
@@ -55,8 +55,8 @@ class Solution:
         #    3  2
         #   4
         dfs(0, None)
-        print(self.kids)
-        print(self.xors)
+        # print(self.kids)
+        # print(self.xors)
         tot = self.xors[0]
         ans = inf
         for i in range(1, n):
