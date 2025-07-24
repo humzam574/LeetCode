@@ -17,31 +17,45 @@ class Solution:
                     dp[i][j] = -999999
                     continue
                 # pos = False
-                a, b = 0, defaultdict(int)
+                #a, b = 0, defaultdict(int)
+                a = 0
+                b = 0
                 if i != 0 and '0' <= board[i-1][j] <= '9':
                     # pos = True
                     # dp[i][j] = max(dp[i][j], dp[i - 1][j] + int(board[i-1][j]))
-                    temp = dp[i-1][j][0] + int(board[i-1][j])
-                    b[temp]+=dp[i-1][j][1]
-                    a = max(a, temp)
+                    temp = dp[i-1][j][0] + ord(board[i-1][j]) - 48
+                    # b[temp]+=dp[i-1][j][1]
+                    # a = max(a, temp)
+                    b = dp[i-1][j][1]
+                    a = temp
                 if j != 0 and '0' <= board[i][j-1] <= '9':
                     # pos = True
                     # dp[i][j] = max(dp[i][j], dp[i][j - 1] + int(board[i][j-1]))
-                    temp = dp[i][j-1][0] + int(board[i][j-1])
-                    b[temp]+=dp[i][j-1][1]
-                    a = max(a, temp)
+                    temp = dp[i][j-1][0] + ord(board[i][j-1]) - 48
+                    # b[temp]+=dp[i][j-1][1]
+                    # a = max(a, temp)
+                    if temp > a:
+                        a = temp
+                        b = dp[i][j-1][1]
+                    elif temp == a:
+                        b+=dp[i][j-1][1]
                 if i != 0 and j != 0 and '0' <= board[i-1][j-1] <= '9':
                     # pos = True
                     # dp[i][j] = max(dp[i][j], dp[i-1][j-1] + int(board[i-1][j-1]))
-                    temp = dp[i-1][j-1][0] + int(board[i-1][j-1])
-                    b[temp]+=dp[i-1][j-1][1]
-                    a = max(a, temp)
+                    temp = dp[i-1][j-1][0] + ord(board[i-1][j-1]) - 48
+                    # b[temp]+=dp[i-1][j-1][1]
+                    # a = max(a, temp)
+                    if temp > a:
+                        a = temp
+                        b = dp[i-1][j-1][1]
+                    elif temp == a:
+                        b+=dp[i-1][j-1][1]
                 # if not pos:
                 #     # print(i)
                 #     # print(j)
                 #     #return [0, 0]
                 #     dp[i][j] = (a, 0)
-                dp[i][j] = (a, b[a] % 1000000007)
+                dp[i][j] = (a, b % 1000000007)
         # print(dp)
         if dp[n-1][n-1][1] == 0:
             return [0, 0]
