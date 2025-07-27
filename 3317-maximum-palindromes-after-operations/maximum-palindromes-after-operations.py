@@ -24,12 +24,12 @@ class Solution:
                 counter[i] -= 1
         i = 0
         #you have a counter for all the letters
-        print("odds to remove: " + str(odds))
-        print("wlens before odds: ", end = "")
+        # print("odds to remove: " + str(odds))
+        # print("wlens before odds: ", end = "")
         
-        print(wlens)
-        print(counter)
-        print()
+        # print(wlens)
+        # print(counter)
+        # print()
         while i < len(wlens) and odds > 0:
             if wlens[i] == 1:
                 ans+=1
@@ -46,9 +46,9 @@ class Solution:
         #         cntr.append(num)
         # print(cntr)
         rem = sum(counter)
-        print(rem)
-        print(wlens)
-        print(counter)
+        # print(rem)
+        # print(wlens)
+        # print(counter)
         i = 0
         wlens2 = []
         for num in wlens:
