@@ -1,31 +1,21 @@
 class Solution:
     def champagneTower(self, poured: int, query_row: int, query_glass: int) -> float:
-        # if poured >= 4950:
-        #     return 1
-        #step 1: calculate topfill, how many cups are needed to be filled to make it to your row
-        #step 2: poured-=topfill/(query_row-1) is the amount thats separated
-        #some math to calculate the multiple
-        #  1, 2, 1
-        # 1, 3, 3, 1
-        #1, 4, 6, 4, 1
-        
-        
-        above = sum([i for i in range(query_row+1)])
-        # query_row+=1
-        # query_glass+=1
-        # print("above: " + str(above))
-        # if above >= poured:
-        #     return 0
-        #poured-=above
-        #implement a dp to find the % amount that makes it to a given arr
-        curr = [poured]
-        for i in range(query_row):
-            arr = [0] * (1+len(curr))
-            for j in range(len(curr)):
-                if curr[j] > 1:
-                    arr[j]+=(curr[j]-1)/2
-                    arr[j+1]+=(curr[j]-1)/2
-            curr = arr
-        # print(curr)
-        return min(curr[query_glass], 1)
-        
+        # Initialize the top row with the total poured amount
+        previous_row = [poured]
+
+        # Build each row from 1 up to query_row
+        for row in range(1, query_row + 1):
+            # Prepare a new row with row+1 glasses, initially empty
+            current_row = [0.0] * (row + 1)
+            # For each glass in the previous row, compute overflow
+            for glass_index in range(row):
+                overflow = previous_row[glass_index] - 1.0
+                if overflow > 0:
+                    # Split the overflow equally to the two glasses below
+                    current_row[glass_index] += overflow * 0.5
+                    current_row[glass_index + 1] += overflow * 0.5
+            # Move on: current becomes previous for next iteration
+            previous_row = current_row
+
+        # The amount in the target glass cannot exceed 1
+        return min(1.0, previous_row[query_glass])
