@@ -13,6 +13,9 @@ class Solution:
             inf = float('inf')
             min1 = min2 = inf
             idx1 = -1
+            n = len(arr1)
+            ans = [0]*n
+
             for j, v in enumerate(arr2):
                 if v < min1:
                     min2, min1 = min1, v
@@ -20,15 +23,11 @@ class Solution:
                 elif v < min2:
                     min2 = v
 
-            # 2) Build the answer in O(n)
-            n = len(arr1)
-            ans = [0]*n
             for i in range(n):
                 if i != idx1:
                     ans[i] = arr1[i] + min1
                 else:
                     ans[i] = arr1[i] + min2
-
             return ans
 
         m = len(grid)
