@@ -1,38 +1,13 @@
+MOD = 1_000_000_007
+f = [1,1,2,4]
+g = [1,1,2,4]
+for _ in range(10**5-3):
+    f.append((f[-1]+f[-2]+f[-3]) % MOD)
+    g.append((g[-1]+g[-2]+g[-3]+g[-4]) % MOD)
 class Solution:
-    def countTexts(self, s: str) -> int:
-        #7 and 9 are 4's
-        l = 0
-        n = len(s)
-        mod = 1000000007
-        ans = 1
-        self.memo = [{1: 1, 2: 2, 3: 4}, {1: 1, 2: 2, 3: 4, 4: 8}]
-        def dp(i, curr):
-            if curr <= 0:
-                return 0
-            if curr in self.memo[i]:
-                return self.memo[i][curr]
-            val = dp(i, curr-1) + dp(i, curr-2) + dp(i, curr-3)
-            if i:
-                val+=dp(i, curr-4)
-            val%=1000000007
-            self.memo[i][curr] = val
-            return val
-
-        for r in range(n):
-            if s[r] != s[l]:
-                if s[l] == '7' or s[l] == '9':
-                    ans = ans * dp(1, r-l)
-                else:
-                    ans = ans * dp(0, r-l)
-                l = r
-                ans%=mod
-                # print(ans)
-        #do it for the last one
-        # print("l: " + str(l))
-        # print("r: " + str(r))
-        if l < r:
-            if s[l] == '7' or s[l] == '9':
-                ans = ans * dp(1, r-l + 1)
-            else:
-                ans = ans * dp(0, r-l + 1)
-        return ans%mod
+    def countTexts(self, pressedKeys: str) -> int:
+        res = 1
+        for c,cnt in groupby(pressedKeys):
+            m = len(list(cnt))
+            res = res * (g[m] if c in "79" else f[m]) % MOD
+        return res
