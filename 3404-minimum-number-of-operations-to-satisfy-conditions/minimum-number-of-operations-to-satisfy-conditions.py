@@ -10,11 +10,25 @@ class Solution:
         #put it in a tup
         #keep going and DP
         def best(arr1, arr2):
-            ans = [inf] * 10
-            for i in range(10):
-                for j in range(10):
-                    if j != i:
-                        ans[i] = min(ans[i], arr1[i] + arr2[j])
+            inf = float('inf')
+            min1 = min2 = inf
+            idx1 = -1
+            for j, v in enumerate(arr2):
+                if v < min1:
+                    min2, min1 = min1, v
+                    idx1 = j
+                elif v < min2:
+                    min2 = v
+
+            # 2) Build the answer in O(n)
+            n = len(arr1)
+            ans = [0]*n
+            for i in range(n):
+                if i != idx1:
+                    ans[i] = arr1[i] + min1
+                else:
+                    ans[i] = arr1[i] + min2
+
             return ans
 
         m = len(grid)
@@ -29,5 +43,3 @@ class Solution:
             prev = dp[j-1]
             dp[j] = best(curr, prev)
         return min(dp[-1])
-
-            
