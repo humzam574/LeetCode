@@ -2,14 +2,8 @@ class Solution:
     def matchPlayersAndTrainers(self, players: List[int], trainers: List[int]) -> int:
         players.sort()
         trainers.sort()
-        j = 0
-        ans = 0
-        n = len(trainers)
-        for p in players:
-            while j < n and trainers[j] < p:
-                j+=1
-            if j == n:
-                return ans
-            ans+=1
-            j+=1
-        return ans
+        j, m = 0, len(players)
+        for t in trainers:
+            if j < m and players[j] <= t:
+                j += 1
+        return j
