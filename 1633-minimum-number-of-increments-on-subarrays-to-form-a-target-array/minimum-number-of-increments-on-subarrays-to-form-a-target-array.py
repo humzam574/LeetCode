@@ -1,9 +1,9 @@
 class Solution:
     def minNumberOperations(self, target: List[int]) -> int:
-        #for every increment, you need to know where the farthest number of <=length exists
-        #monotonic stack!
-        ans = target[0]
-        for i in range(1, len(target)):
-            if target[i] > target[i-1]:
-                ans+=target[i]-target[i-1]
+        ans = 0
+        prev = 0
+        for t in target:
+            if t > prev:
+                ans += t - prev
+            prev = t
         return ans
