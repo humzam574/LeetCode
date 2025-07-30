@@ -6,17 +6,20 @@
 #         self.right = right
 class Solution:
     def closestKValues(self, root: Optional[TreeNode], target: float, k: int) -> List[int]:
-        self.heap = []
-        self.len = 0
-        heapify(self.heap)
-        def dfs(curr):
-            if not curr:
-                return
-            heappush(self.heap, (-abs(curr.val-target), curr.val))
-            self.len+=1
-            if self.len > k:
-                heappop(self.heap)
-            dfs(curr.left)
-            dfs(curr.right)
+        queue = deque()
+
+        def dfs(node):
+            if not node: return
+
+            dfs(node.left)
+            queue.append(node.val)
+            if len(queue) > k:
+                if abs(queue[-1] - target) < abs(queue[0] - target):
+                    queue.popleft()
+                else:
+                    queue.pop()
+                    return
+            dfs(node.right)
+
         dfs(root)
-        return [a[1] for a in self.heap]
+        return list(queue)
