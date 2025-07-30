@@ -7,34 +7,34 @@ class LockingTree:
                 continue
             self.nodes[a][0] = b
             self.nodes[b][1].append(a)
-        print(self.nodes)
+        # print(self.nodes)
 
 
 
     def lock(self, num: int, user: int) -> bool:
-        print("lock " + str(num) + " by " + str(user), end = "")
+        # print("lock " + str(num) + " by " + str(user), end = "")
         #1 LOCK: if a node is unlocked and hasnt been locked by other users, lock it
         if self.nodes[num][2] == -1:
             self.nodes[num][2] = user
-            print(" true")
+            # print(" true")
             return True
-        print(" false")
+        # print(" false")
         return False
         
 
     def unlock(self, num: int, user: int) -> bool:
         #2 UNLOCK: if a node is locked by the current user, unlock
-        print("unlock " + str(num) + " by " + str(user), end = "")
+        # print("unlock " + str(num) + " by " + str(user), end = "")
         if self.nodes[num][2] == user:
             self.nodes[num][2] = -1
-            print(" true")
+            # print(" true")
             return True
-        print(" false")
+        # print(" false")
         return False
         
 
     def upgrade(self, num: int, user: int) -> bool:
-        print("upgrade " + str(num) + " by " + str(user), end = "")
+        # print("upgrade " + str(num) + " by " + str(user), end = "")
         #UPGRADE: if the node + all ancestors are unlocked + there is at least one locked descendent, then lock the node and unlock all descendants
         def up(curr):
             if curr == -1:
@@ -61,9 +61,9 @@ class LockingTree:
             if down(num):
                 # print("down num")
                 self.nodes[num][2] = user
-                print(" True")
+                # print(" True")
                 return True
-        print(" False")
+        # print(" False")
         return False
         
 
