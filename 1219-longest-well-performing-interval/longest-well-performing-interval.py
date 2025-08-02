@@ -10,14 +10,16 @@ class Solution:
         #keep track first point that has a given value
         points = {0: -1}
         for i, v in enumerate(prefix):
-            if v not in points:
+            if v not in points and v < 0:
                 if v-1 in points:
                     points[v] = min(i, points[v-1])
                 else:
                     points[v] = i
         ans = 0
         for i, v in enumerate(prefix):
-            if v - 1 in points:
+            if v > 0:
+                ans = max(ans, i+1)
+            elif v - 1 in points:
                 # print(str(i) + ", " + str(i - points[v-1] + 1))
                 ans = max(ans, i - points[v-1])
         return ans
