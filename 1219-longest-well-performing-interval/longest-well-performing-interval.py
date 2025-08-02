@@ -11,10 +11,10 @@ class Solution:
         points = {0: -1}
         for i, v in enumerate(prefix):
             if v not in points and v < 0:
-                if v-1 in points:
-                    points[v] = min(i, points[v-1])
-                else:
-                    points[v] = i
+                # if v-1 in points:
+                #     points[v] = min(i, points[v-1])
+                # else:
+                points[v] = i
         ans = 0
         for i, v in enumerate(prefix):
             if v > 0:
