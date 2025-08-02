@@ -1,39 +1,25 @@
 class Solution:
     def findShortestCycle(self, n: int, edges: List[List[int]]) -> int:
-        #BFS
-        ans = inf
-        adj = [[] for _ in range(n)]
-        for a, b in edges:
-            adj[a].append(b)
-            adj[b].append(a)
-        
+        self.ans = float('inf')
+        self.dep = [float('inf')] * n
+        self.conn = [[] for _ in range(n)]
+
+        for u, v in edges:
+            self.conn[u].append(v)
+            self.conn[v].append(u)
+
+        def dfs(cur, par, d):
+            self.dep[cur] = d
+            for sub in self.conn[cur]:
+                if sub != par:
+                    if self.dep[sub] > d + 1:
+                        dfs(sub, cur, d + 1)
+                    elif self.dep[sub] < d:
+                        # Cycle detected
+                        self.ans = min(self.ans, d - self.dep[sub] + 1)
+
         for i in range(n):
-            # if i in visited:
-            #     continue
-            visited = set()
-            dq = deque()
-            dq.append((i, None, 0))
-            # visited[i] = 0
-            while dq:
-                curr, prev, ln = dq.popleft()
-                if ln > ans:
-                    continue
-                # print(str(curr) + ", " + str(prev))
-                visited.add(curr)
-                
-                for edge in adj[curr]:
-                    if edge == prev:
-                        continue
-                    if edge == i:
-                        ans = min(ans, ln + 1)
-                        dq = None
-                        break
-                    dq.append((edge, curr, ln + 1))
-        return ans if ans != inf else -1
-            
-        
-        #3 ------> 2
-        #|         |
-        #0 -> 4    |
-        #|    |   /
-        #5 <- 1 -/
+            if self.dep[i] == float('inf'):
+                dfs(i, -1, 0)
+
+        return -1 if self.ans == float('inf') else self.ans
