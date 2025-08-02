@@ -1,24 +1,17 @@
 class Solution:
     def updateMatrix(self, mat: List[List[int]]) -> List[List[int]]:
-        m = len(mat)
-        n = len(mat[0])
-        dq = deque()
-        visited = set()
-        ans = [[0] * n for _ in range(m)]
-        for x in range(m):
-            for y in range(n):
-                if mat[x][y] == 0:
-                    dq.append((x, y, 0))
-                    visited.add((x, y))
-                    
-
-        while dq:
-            x, y, dist = dq.popleft()
-            
-            for dx, dy in ((1,0), (-1,0), (0, 1), (0, -1)):
-                nx, ny = x+dx, y+dy
-                if 0 <= nx < m and 0 <= ny < n and (nx,ny) not in visited:
-                    dq.append((nx, ny, dist+1))
-                    visited.add((nx, ny))
-                    ans[nx][ny] = dist+1
-        return ans
+        m,n = len(mat), len(mat[0])
+        
+        for r in range(m):
+            for c in range(n):
+                if mat[r][c] > 0:
+                    top = mat[r - 1][c] if r > 0 else math.inf
+                    left = mat[r][c-1] if c > 0 else math.inf
+                    mat[r][c] = min(top,left) + 1
+        for r in range(m-1,-1,-1):
+            for c in range(n-1,-1,-1):
+                if mat[r][c] > 0:
+                    bottom = mat[r + 1][c] if r < m -1 else math.inf
+                    right =  mat[r][c + 1] if c < n -1 else math.inf
+                    mat[r][c] = min(mat[r][c], bottom + 1, right + 1)
+        return mat
