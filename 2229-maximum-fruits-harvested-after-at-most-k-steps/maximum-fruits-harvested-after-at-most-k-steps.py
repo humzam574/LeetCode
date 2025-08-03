@@ -1,50 +1,23 @@
 class Solution:
     def maxTotalFruits(self, fruits: List[List[int]], startPos: int, k: int) -> int:
-        #sliding window
-        #either you start by going r and then turn left
-        #or you start going l and then turn right
-        #evaluate these
-        #SLIDING WINDOW
-        #start by going all the way to the left
-        #in each round, increment l+=2, r+=1
-        #then in the next pass
-        #start going all the way to the right
-        #increment r-=2, l-=1
+        max_res = 0
+        left = bisect.bisect_left(fruits, [startPos - k, float("-inf")]) # >=
+        right = bisect.bisect_right(fruits, [startPos, float("inf")]) # >
 
-        self.lookup = {a:b for a,b in fruits}
-        self.high = fruits[-1][0]
-        # print(self.lookup)
-        def get(x):
-            if x > self.high or x < 0 or x not in self.lookup:
-                return 0
-            return self.lookup[x]
-        
 
-        l = startPos - k
-        r = startPos
-        curr = 0
-        for i in range(l, r+1):
-            curr+=get(i)
-        ans = curr
-        while l < startPos - 1 and r < self.high:
-            curr-=get(l)
-            curr-=get(l+1)
-            curr+=get(r+1)
-            l += 2
-            r += 1
-            ans = max(ans, curr)
+        curr_subarray_sum = sum([fruits[i][1] for i in range(left, right)])
+        max_res = curr_subarray_sum
+
+        for i in range(right, len(fruits)):
+            curr_subarray_sum += fruits[i][1]
+            right_loc = fruits[i][0]
+
+            if right_loc - startPos > k:
+                break
+
+            while min(abs(right_loc - startPos), abs(startPos- fruits[left][0])) + right_loc - fruits[left][0] > k:
+                curr_subarray_sum -= fruits[left][1]
+                left += 1
+            max_res = max(max_res, curr_subarray_sum)
         
-        r = startPos + k
-        l = startPos
-        curr = 0
-        for i in range(l, r+1):
-            curr+=get(i)
-        ans = max(ans, curr)
-        while r+1 > startPos and l > 0:
-            curr-=get(r)
-            curr-=get(r-1)
-            curr+=get(l-1)
-            l -= 1
-            r -= 2
-            ans = max(ans, curr)
-        return ans
+        return max_res
