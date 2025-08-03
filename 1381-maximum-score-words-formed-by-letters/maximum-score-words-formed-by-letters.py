@@ -5,12 +5,12 @@ class Solution:
         for l in letters:
             freq[l]+=1
         ans = 0
-        print(freq)
+        # print(freq)
         for i in range(1, (2**n)+1):
             # print(bin(i)[2:])
             b = bin(i)[2:]
             b = ("0" * (n - len(b))) + b
-            print(b)
+            # print(b)
             curr = defaultdict(int)
             use = []
             for j,c in enumerate(b):
@@ -26,12 +26,12 @@ class Solution:
             # print(curr)
             if not cont:
                 continue
-            print(curr)
+            # print(curr)
             
             val = 0
             for k, v in curr.items():
                 val+=v*score[ord(k) - 97]
-            print(val)
-            print()
+            # print(val)
+            # print()
             ans = max(ans, val)
         return ans
