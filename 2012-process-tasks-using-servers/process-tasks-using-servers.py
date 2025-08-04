@@ -1,33 +1,32 @@
+import heapq
 class Solution:
     def assignTasks(self, servers: List[int], tasks: List[int]) -> List[int]:
-        #make a heap for the servers (weight, idx)
-        #whenever you pop, set up a task in a second heap
-        if len(servers) > 56:
-            print(servers[36])
-            print(servers[56])
-        srv = [(w,i) for i,w in enumerate(servers)]
-        heapify(srv)
-        insert = []
-        heapify(insert)
-        ans = [0] * len(tasks)
-        delta = 0
-        for i,t in enumerate(tasks):
-            if delta > 0:
-                delta-=1
-            while insert and insert[0][0] <= i+delta:
-                tup = heappop(insert)
-                heappush(srv, tup[1:])
-            if not srv:
-                delta = insert[0][0] - i
-                while insert and insert[0][0] <= i+delta:
-                    tup = heappop(insert)
-                    heappush(srv, tup[1:])
-            # if 145 < i < 149:
-            #     print(str(i + delta))
-            #     print(srv)
-            #     print(insert)
-            #     print()
-            w, idx = heappop(srv)
-            ans[i] = idx
-            heappush(insert, (i+t+delta, w, idx))
-        return ans
+        answer = []
+        used_servers = [] # (time_when_server_is_free, weight, index)
+        free_servers = [(0, weight, index) for index, weight in enumerate(servers)]
+        heapq.heapify(free_servers)
+
+        for current_time, time_to_complete in enumerate(tasks):
+            # determine if any used_servers are now free_servers and add to free_servers heap
+            while used_servers and used_servers[0][0] <= current_time:
+                free_server = heapq.heappop(used_servers)
+                heapq.heappush(free_servers, (0, free_server[1], free_server[2]))
+
+            if free_servers:
+                current_server = heapq.heappop(free_servers)
+                time_when_current_server_is_free = current_time + time_to_complete
+            else:
+                current_server = heapq.heappop(used_servers)
+                time_when_current_server_is_free = current_server[0] + time_to_complete
+            _, current_server_weight, current_server_index = current_server
+
+            if time_when_current_server_is_free <= current_time + 1:
+                # server will be free next second
+                heapq.heappush(free_servers, (0, current_server_weight, current_server_index))
+            else:
+                # server will not be free next second
+                heapq.heappush(used_servers, (time_when_current_server_is_free, current_server_weight, current_server_index))
+
+            answer.append(current_server_index)
+
+        return answer            
