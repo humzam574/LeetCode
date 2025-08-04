@@ -21,21 +21,13 @@ class Solution:
                     ls+=1
                     rs-=1
                 memo[(l, r)] = diff
-        # print(memo)
         for i in range(n):
             dp[0][i] = memo[(0, i)]
-            # print(memo[(0, i)], end = " ")
-        # print(dp[0])
-        # print()
         for j in range(1, k):
             for i in range(j+1, n):
                 mx = dp[j-1][i-1] + 1
                 for l in range(j-1, i):
                     mx = min(mx, dp[j-1][l] + memo[(l+1,i)])
-                # print(str(j) + ", " + str(i))
                 dp[j][i] = mx
-        # print(dp[0])
-        # print()
-        for row in dp:
-            print(row)
+
         return dp[-1][-1]
