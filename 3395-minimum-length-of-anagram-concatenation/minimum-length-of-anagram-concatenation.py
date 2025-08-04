@@ -1,27 +1,19 @@
 class Solution:
     def minAnagramLength(self, s: str) -> int:
         n = len(s)
-        if len(set(s)) == 1:
+        c = Counter(s)
+        if len(c) == 1:
             return 1
-        test = set()
-        for i in range(2, int(n ** 0.5 + 1)):
-            if n % i == 0:
-                val = n // i
-                #test.append(val)
-                #test.append(i)
-                test.add(i)
-                test.add(val)
-        test = sorted(list(test))
-        for x in test:
-            comp = Counter(s[:x])
-            cont = True
-            for r in range(x, n+1, x):
-                if Counter(s[r-x:r]) != comp:
-                    cont = False
-                    break
-            if cont:
-                return x
-
-
-
+        x = reduce(gcd, c.values())
+        if x == 1:
+            return n
+        for i in range(x, 1, -1):
+            if x % i:
+                continue
+            dn = n // i
+            arr = (
+                sorted(s[j*dn:(j+1)*dn]) for j in range(i)
+            )
+            if all(a == b for a, b in pairwise(arr)):
+                return n // i
         return n
