@@ -1,46 +1,36 @@
-# import atexit; atexit.register(lambda: open("display_runtime.txt", "w").write("0"))
-
+from collections import defaultdict
+from collections import deque
 class Solution:
     def ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
-        wordList = set(wordList)
-        if endWord not in wordList:
-            return 0
-        def search(curr):
-            start = list(curr)
-            curr = list(curr)
-            ans = []
-            for i in range(len(start)):
-                for char in range(ord('a', ord('z')+1)):
-                    char = chr(char)
-                    if char == start[i]:
-                        continue
-                    curr[i] = char
-                    temp = ''.join(curr)
-                    if temp in wordList:
-                        ans.append(temp)
-                curr[i] = start[i]
-            return ans
-        
-        prev = set()
-        dq = deque()
-        dq.append((beginWord, 1))
-        while dq:
-            curr, dep = dq.popleft()
-            if curr == endWord:
-                return dep
-            prev.add(curr)
-            start = list(curr)
-            curr = list(curr)
-            for i in range(len(start)):
-                for char in range(ord('a'), ord('z')+1):
-                    char = chr(char)
-                    if char == start[i]:
-                        continue
-                    curr[i] = char
-                    temp = ''.join(curr)
-                    if temp in wordList and temp not in prev:
-                        dq.append((temp, dep + 1))
-                curr[i] = start[i]
+        # build intermediate words dict --- ["*ot": [hot, dot, lot]]
+        wordsLength = len(wordList)
+
+        intermediate_words = defaultdict(list)
+
+        for word in wordList:
+            for i in range(len(word)):
+                intermediate = word[:i] + "*" + word[i+1:]
+                intermediate_words[intermediate].append(word)
+        print(intermediate_words)
+
+        # queue
+        queue = deque()
+        queue.append((beginWord, 1))
+
+        visited = set()
+        visited.add(beginWord)
+
+        while queue:
+            word, level = queue.popleft()
+
+            for i in range(len(word)):
+                intermediate = word[:i] + "*" + word[i+1:]
+                for neighbor in intermediate_words[intermediate]:
+                    if neighbor == endWord:
+                        return level + 1
+                    if neighbor not in visited:
+                        visited.add(neighbor)
+                        queue.append((neighbor, level+1))
         return 0
-
-
+        
+        
