@@ -1,40 +1,46 @@
-import atexit; atexit.register(lambda: open("display_runtime.txt", "w").write("0"))
+# import atexit; atexit.register(lambda: open("display_runtime.txt", "w").write("0"))
 
 class Solution:
     def ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
-        set_words = set(wordList)
-        
-        if endWord == beginWord or endWord not in set_words:
+        wordList = set(wordList)
+        if endWord not in wordList:
             return 0
-
-        adj = defaultdict(list)
-
-        def find_neighbors(word: str) -> None:
-            for i in range(len(word)):
-                for order in range(ord('a'), ord('z') + 1):
-                    if order == ord(word[i]):
+        def search(curr):
+            start = list(curr)
+            curr = list(curr)
+            ans = []
+            for i in range(len(start)):
+                for char in range(ord('a', ord('z')+1)):
+                    char = chr(char)
+                    if char == start[i]:
                         continue
-                    new_word = word[:i] + chr(order) + word[i + 1:]
-                    if new_word in set_words:
-                        adj[word].append(new_word)
-            return
-
-        find_neighbors(beginWord)
-        for word in wordList:
-            find_neighbors(word)
+                    curr[i] = char
+                    temp = ''.join(curr)
+                    if temp in wordList:
+                        ans.append(temp)
+                curr[i] = start[i]
+            return ans
         
-        queue = deque([beginWord])
-        visited = {beginWord}
-        path_len = 1
-
-        while queue:
-            for _ in range(len(queue)):
-                curr_word = queue.popleft()
-                if curr_word == endWord:
-                    return path_len
-                for neighbor in adj[curr_word]:
-                    if neighbor not in visited:
-                        visited.add(neighbor)
-                        queue.append(neighbor)
-            path_len += 1
+        prev = set()
+        dq = deque()
+        dq.append((beginWord, 1))
+        while dq:
+            curr, dep = dq.popleft()
+            if curr == endWord:
+                return dep
+            prev.add(curr)
+            start = list(curr)
+            curr = list(curr)
+            for i in range(len(start)):
+                for char in range(ord('a'), ord('z')+1):
+                    char = chr(char)
+                    if char == start[i]:
+                        continue
+                    curr[i] = char
+                    temp = ''.join(curr)
+                    if temp in wordList and temp not in prev:
+                        dq.append((temp, dep + 1))
+                curr[i] = start[i]
         return 0
+
+
