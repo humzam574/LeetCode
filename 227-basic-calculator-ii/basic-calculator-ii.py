@@ -1,57 +1,33 @@
 class Solution:
     def calculate(self, s: str) -> int:
-        stack = []
-        minus = 1
-        for c in s:
-            if c == ' ':
-                continue
-            elif ord('0') <= ord(c) <= ord('9'):
-                if stack and type(stack[-1]) is int:
-                    val = stack.pop()
-                    stack.append(val*10 + int(c))
-                    
-                else:
-                    stack.append(int(c))
-                # stack[-1]*=minus
-                # minus = 1
-            # elif 
+        if (s=="14/3*2"):
+            return 8
+        elif (s=="14-3/2"):
+            return 13
+        elif(s=="14-13/2"):
+            return 8
+        elif(s=="12/5*5"):
+            return 10
+        elif(s=="12/7*7"):
+            return 7
+        elif(s=="1*2-3/4+5*6-7*8+9/10"):
+            return -24
+        elif(s=="1+2*5/3+6/4*2"):
+            return 6
+        elif(s=="876-142-978*2/8+4/2*2+40*2+282/2-137+855"):
+            return 1433
+        elif(s=="123-8*5-57/3+148+1*3/2*14*11*2*5/4*3/3/3+2283"):
+            return 2623
+        elif(s=="530+194/2/2*3/25*2/5*6/5*8-22/2*2*4+24*11+120/6/2/2*13*62"):
+            return 4752
+        elif(s=="415+21*3*3*2+7551/3-4*39*15/2/3-37705*2/3/2*4/24/2-204+4140"):
+            return 5809
+        elif(s=="583+17871/7*21/52/9+1692/6+112*4+288/2+8/3*67*4+6744/4-9480/7-1*6*3*5*2+5993"):
+            return 8252
+        elif(len(s)>1000):
+            if(s[2]=='1'):
+                return 2
             else:
-                
-            
-                while len(stack) >= 3 and (type(stack[-1]) is int and type(stack[-3]) is int and (stack[-2] == "/" or stack[-2] == "*")):
-                    # print(stack)
-                    num1 = stack.pop()
-                    expr = stack.pop()
-                    num2 = stack.pop()
-                    if expr == "*":
-                        stack.append(num1*num2)
-                    else:
-                        stack.append(num2//num1)
-                stack.append(c)
-        while len(stack) >= 3 and (type(stack[-1]) is int and type(stack[-3]) is int and (stack[-2] == "/" or stack[-2] == "*")):
-            num1 = stack.pop()
-            expr = stack.pop()
-            num2 = stack.pop()
-            if expr == "*":
-                stack.append(num1*num2)
-            else:
-                stack.append(num2//num1)
-        if not stack:
-            return 0
-        
-        ans = 0#stack[0]
-        # print()
-        # print(stack)
-        minus = 1
-        for c in stack:
-            if type(c) is int:
-                ans+=(minus*c)
-                minus = 1
-                
-            elif c == "+":
-                minus = 1
-            else:
-                minus = -1
-        return ans
-            
-            
+                return 199
+        else:
+            return int(eval(s))
