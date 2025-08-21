@@ -5,18 +5,18 @@ class Solution:
 
         prefix = [[0] * n for _ in range(m)]
 
-        for row in mat:
-            print(row)
-        print()
-        print()
+        # for row in mat:
+        #     print(row)
+        # print()
+        # print()
 
         for i in range(m):
             prefix[i][0] = mat[i][0]
             for j in range(1, n):
                 prefix[i][j] = 0 if not mat[i][j] else prefix[i][j-1] + 1
         
-        for row in prefix:
-            print(row)
+        # for row in prefix:
+        #     print(row)
         
         ans = 0
         for i in range(m):
