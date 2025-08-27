@@ -17,10 +17,10 @@ class Solution:
                 if c == ' ':
                     ndi = i
             end = phr[ndi+1:]
-            print(phr)
-            print(start)
-            print(end)
-            print()
+            # print(phr)
+            # print(start)
+            # print(end)
+            # print()
             for val in starts[end]:
                 # print("adding on " + phr)
                 if val:
@@ -41,9 +41,9 @@ class Solution:
                 ends[end].append(phr[:ndi])
             else:
                 ends[end].append('')
-        print(starts)
-        print()
-        print(ends)
-        print()
-        print(ans)
+        # print(starts)
+        # print()
+        # print(ends)
+        # print()
+        # print(ans)
         return sorted(list(ans))
