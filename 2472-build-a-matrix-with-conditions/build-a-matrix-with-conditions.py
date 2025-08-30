@@ -1,72 +1,42 @@
 class Solution:
-    def buildMatrix(self, k: int, rowconds: List[List[int]], colconds: List[List[int]]) -> List[List[int]]:
-        #build a k x k square matrix
-        
-        #for rowconditions where each idx is [a,b]
-        #a should be in a row that is striclty above where b appears
-        
-        #for colconditions where each idx is [c, d]
-        #c should appear strictly left of d
-
-        #topo sort from rows --> kahns
-        #topo sort from cols --> kahns
-        #construct and you're done! :)
-        def kahns(rows):
-            rowdeps = [0] * (k+1)
-            rowmap = defaultdict(list)
-            if rows:
-                for a,b in rowconds:
-                    #a is before b
-                    #b depends on a
-                    rowdeps[b]+=1
-                    rowmap[a].append(b)
-            else:
-                for a,b in colconds:
-                    #a is before b
-                    #b depends on a
-                    rowdeps[b]+=1
-                    rowmap[a].append(b)
+    def buildMatrix(self, k: int, rowConditions: List[List[int]], colConditions: List[List[int]]) -> List[List[int]]:
+        def topo_sort(edges):
+            indegree = [0]*(k+1)
+            adj = [[] for _ in range(k+1)]
+            for u,v in edges:
+                adj[u].append(v)
+                indegree[v] +=1
+            order = []
+            q = deque()
+            for i in range(1,k+1):
+                if indegree[i] == 0:
+                    q.append(i)
             
-            #rowsort = [0] * k
-            rowsort = []
-            # print(rowdeps)
-            # print(rowmap)
+            while q:
+                u = q.popleft()
+                order.append(u)
+                for v in adj[u]:
+                    indegree[v]-=1
+                    if indegree[v] ==0:
+                        q.append(v)
+            return order
 
-            dq = deque()
-            for i,v in enumerate(rowdeps):
-                if i == 0:
-                    continue
-                if v == 0:
-                    dq.append(i)
-            
-            #ptr = 0
-            while dq:
-                n = dq.popleft()
-                #rowsort[ptr] = n
-                rowsort.append(n)
-                #ptr+=1
-                for nb in rowmap[n]:
-                    rowdeps[nb]-=1
-                    if rowdeps[nb] == 0:
-                        dq.append(nb)
-            if len(rowsort) != k:
-                return [-1]
-            return rowsort
-        
-        rows = kahns(True)
-        cols = kahns(False)
+        row_order = topo_sort(rowConditions)
+        if len(row_order) != k: return []
 
-        if rows == [-1] or cols == [-1]:
-            return []
-        
-        indices = defaultdict(list)
-        for i,c in enumerate(rows):
-            indices[c].append(i)
-        for i,c in enumerate(cols):
-            indices[c].append(i)
-        
-        ans = [[0] * k for _ in range(k)]
+        col_order = topo_sort(colConditions)
+        if len(col_order) != k: return []
 
-        for k,v in indices.items():
-            ans[v[0]][v[1]] = k
-        return ans
+        res = [[0]*k for _ in range(k)]
+
+        row_map = {}
+        col_map = {}
+        for i in range(k):
+            row_map[row_order[i]] = i
+            col_map[col_order[i]] = i
+        
+        for i in range(1,k+1):
+            r,c = row_map[i], col_map[i]
+            res[r][c] = i
+        
+        return res
