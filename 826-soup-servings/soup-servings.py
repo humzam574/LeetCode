@@ -16,7 +16,8 @@ class Solution:
         #2,2 = 0.25 + 0.25 + (0.25/2)
 
         memo = {}
-        @cache
+        # @cache
+        @lru_cache(maxsize=None)
         def dp(a, b):
             # print(str(a) + ", " + str(b))
             if a <= 0 and b <= 0:
