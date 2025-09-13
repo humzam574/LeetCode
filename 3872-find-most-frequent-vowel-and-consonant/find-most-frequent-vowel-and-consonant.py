@@ -1,25 +1,22 @@
 class Solution:
     def maxFreqSum(self, s: str) -> int:
-        vowels = defaultdict(int)
-        cons = defaultdict(int)
-        for c in s:
-            if c in {'a', 'e', 'i', 'o', 'u'}:
-                vowels[c]+=1
+        
+        from collections import defaultdict
+        freq_map = defaultdict(int)
+        for char in s:
+            freq_map[char] += 1
+        
+        vowel_max = 0
+        consonant_max = 0
+        vowels = ['a', 'e', 'i', 'o', 'u']
+        for key, value in freq_map.items():
+            if key in vowels:
+                if value > vowel_max:
+                    vowel_max = value
             else:
-                cons[c]+=1
-
-        high = 0
-        highvow = 0
-        for k,v in vowels.items():
-            if v > high:
-                high = v
-                highvow = v
+                if value > consonant_max:
+                    consonant_max = value
         
-        high = 0
-        highcons = 'b'
-        for v,k in cons.items():
-            if k > high:
-                high = k
-                highcons = v
+        return vowel_max + consonant_max
+            
         
-        return high+ highvow
