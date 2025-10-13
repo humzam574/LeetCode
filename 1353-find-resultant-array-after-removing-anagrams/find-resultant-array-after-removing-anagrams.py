@@ -1,12 +1,14 @@
 class Solution:
     def removeAnagrams(self, words: List[str]) -> List[str]:
-        ans = []
-        words.append("2")
-        l = 0
-        for r in range(len(words)):
-            if sorted(words[l]) != sorted(words[r]):
-                ans.append(words[l])
-                l = r
-        if l != r:
-            ans.append(words[l])
-        return ans
+        res = []
+        stack = []
+
+        stack.append(''.join(sorted(words[0])))
+        res.append(words[0])
+
+        for i in range(1, len(words)):
+            curr = ''.join(sorted(words[i]))
+            if stack[-1] != curr:
+                stack.append(curr)
+                res.append(words[i])
+        return res
