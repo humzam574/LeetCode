@@ -1,14 +1,16 @@
 class Solution:
     def findSmallestInteger(self, nums: List[int], value: int) -> int:
-        arr = [0] * value
-        for num in nums:
-            arr[num % value]+=1
-        # print(arr)
-        low = inf
-        idx = -1
-        for i,x in enumerate(arr):
-            if x < low:
-                low = x
-                idx = i
-        
-        return value*low + idx
+        n = len(nums)
+        if value == 1:
+            return n
+        freq = [0]*value
+        for item in nums:
+            freq[item%value] += 1
+        maxround = min(freq)
+        freq = [item-maxround for item in freq]
+        if freq[0] == 0:
+            return maxround * value
+        ind = 0
+        while ind+1<value and freq[ind+1] > 0:
+            ind += 1
+        return maxround * value+ind+1
