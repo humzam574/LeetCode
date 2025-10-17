@@ -7,9 +7,9 @@ class Solution:
         for key in sets.keys():
             sets[key] = len(sets[key])
             #high = max(high, sets[k])
-        print(sets)
+        # print(sets)
         ans = [0] * k
-        print(ans)
+        # print(ans)
         for v in sets.values():
             ans[v-1]+=1
         return ans
