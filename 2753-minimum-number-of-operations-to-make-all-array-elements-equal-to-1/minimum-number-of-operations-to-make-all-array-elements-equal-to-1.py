@@ -8,7 +8,8 @@ class Solution:
             if not arr:
                 return 0
             result = arr[0]
-            for num in arr[1:]:
+            for i in range(1, len(arr)):
+                num = arr[i]
                 result = math.gcd(result, num)
             return result
         n = len(nums)
@@ -19,16 +20,9 @@ class Solution:
             if low != inf:
                 break
             for end in range(delta, n+1):
-                
                 start = end - delta
-                # print(start, end)
                 if gcdfunc(nums[start:end]) == 1:
                     low = end - start
                     break
-            # print()
-        # for i in range(n):
-        #     for j in range(i+1,n+1):
-        #         if gcdfunc(nums[i:j]) == 1:
-        #             low = min(low, j - i)
         
         return len(nums) - 2 + low
