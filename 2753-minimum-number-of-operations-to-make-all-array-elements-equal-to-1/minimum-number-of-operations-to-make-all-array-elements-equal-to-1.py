@@ -15,9 +15,20 @@ class Solution:
         low = inf
         if gcdfunc(nums) != 1:
             return -1
-        for i in range(n):
-            for j in range(i+1,n+1):
-                if gcdfunc(nums[i:j]) == 1:
-                    low = min(low, j - i)
+        for delta in range(1,n+1):
+            if low != inf:
+                break
+            for end in range(delta, n+1):
+                
+                start = end - delta
+                # print(start, end)
+                if gcdfunc(nums[start:end]) == 1:
+                    low = end - start
+                    break
+            # print()
+        # for i in range(n):
+        #     for j in range(i+1,n+1):
+        #         if gcdfunc(nums[i:j]) == 1:
+        #             low = min(low, j - i)
         
         return len(nums) - 2 + low
