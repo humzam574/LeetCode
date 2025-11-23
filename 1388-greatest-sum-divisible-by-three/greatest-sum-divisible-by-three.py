@@ -1,16 +1,29 @@
 class Solution:
     def maxSumDivThree(self, nums: List[int]) -> int:
-        dp = [[0,0,0] for _ in range(len(nums)+1)]
-        # dp[0][nums[0]%3]=1
-        for i in range(len(nums)):
-            delta = nums[i] % 3
-            dp[i][delta] = dp[i-1][0] + nums[i]
-            if dp[i-1][1]:
-                dp[i][(delta+1)%3] = dp[i-1][1] + nums[i]
-            if dp[i-1][2]:
-                dp[i][(delta+2)%3] = dp[i-1][2] + nums[i]
-            for j in range(3):
-                dp[i][j] = max(dp[i][j],dp[i-1][j])
-            
-        return dp[-2][0]
-            
+        s = sum(nums)
+        
+        if s % 3 == 0:
+            return s
+        
+        r11 = 10000
+        r12 = 10000
+        r21 = 10000
+        r22 = 10000
+        
+        for num in nums:
+            if num % 3 == 1 and num < r12:
+                if num < r11:
+                    r12 = r11
+                    r11 = num
+                else:
+                    r12 = num
+            if num % 3 == 2 and num < r22:
+                if num < r21:
+                    r22 = r21
+                    r21 = num
+                else: 
+                    r22 = num
+        if s % 3 == 1:
+            return s - min(r11, r21+r22)
+        if s % 3 == 2:
+            return s - min(r21, r11+r12) 
