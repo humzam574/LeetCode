@@ -1,15 +1,19 @@
 class Solution:
     def specialTriplets(self, nums: List[int]) -> int:
-        pre = defaultdict(int)
-        pre[nums[0]]+=1
-        post = Counter(nums)
-        post[nums[0]]-=1
-        ans = 0
-        for i in range(1, len(nums) - 1):
-            post[nums[i]]-=1
-            
-            var = nums[i]*2
-            ans+= (pre[var]*post[var])
-            ans = ans % 1000000007
-            pre[nums[i]]+=1
-        return ans % 1000000007
+        dic={}
+        dic2={}
+        res=0
+        for num in nums:
+            if num%2==0 and num//2 in dic2:
+                res+=dic2[num//2]
+                res%=10**9+7
+            if num*2 in dic:
+                if num in dic2:
+                    dic2[num]+=dic[num*2]
+                else:
+                    dic2[num]=dic[num*2]
+            if num in dic:
+                dic[num]+=1
+            else:
+                dic[num]=1
+        return res
